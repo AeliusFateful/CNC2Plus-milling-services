@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
@@ -22,6 +23,8 @@ const nextConfig = {
       },
     ];
   },
+  basePath: isProd ? "/CNC2Plus-milling-services" : "",
+  assetPrefix: isProd ? "/CNC2Plus-milling-services/" : "",
 };
 
 export default nextConfig;
