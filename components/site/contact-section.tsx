@@ -7,9 +7,9 @@ export function ContactSection() {
       id="contact"
       className="relative overflow-hidden border-t border-border/60 py-24"
     >
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0">
         <Image
-          src="./images/wood-texture.png"
+          src="./images/work-panel.png"
           alt=""
           fill
           className="object-cover"

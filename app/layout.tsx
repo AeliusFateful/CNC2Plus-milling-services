@@ -13,10 +13,15 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
+const basePath = process.env.NODE_ENV === "production" ? "/CNC2Plus-milling-services" : "";
+
 export const metadata: Metadata = {
   title: "CNC++ - Фрезерная резка ЧПУ по дереву",
   description:
     "CNC++ - фрезерная резка и гравировка по дереву на ЧПУ станках. Мебельные детали, декор, вывески, интерьерные панели на заказ. Оставьте заявку и получите расчёт.",
+  icons: {
+    icon: `${basePath}/images/icon.svg`,
+  },
 };
 
 export const viewport: Viewport = {
