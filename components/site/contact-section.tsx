@@ -9,7 +9,7 @@ export function ContactSection() {
     >
       <div className="absolute inset-0 opacity-20">
         <Image
-          src="/images/wood-texture.png"
+          src="./images/wood-texture.png"
           alt=""
           fill
           className="object-cover"

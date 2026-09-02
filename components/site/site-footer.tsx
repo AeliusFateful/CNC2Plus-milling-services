@@ -83,7 +83,7 @@ export function SiteFooter() {
               Политика конфиденциальности
             </a>
             <a
-              href="/privacy"
+              href="/consent"
               className="underline underline-offset-4 transition-colors hover:text-foreground"
             >
               Согласие на обработку персональных данных
