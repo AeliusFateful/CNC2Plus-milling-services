@@ -18,7 +18,7 @@ export function Works() {
               className={`group relative aspect-4/3 overflow-hidden rounded-md border border-border/60 ${work.className}`}
             >
               <Image
-                src={work.src || "/placeholder.svg"}
+                src={work.src}
                 alt={work.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"

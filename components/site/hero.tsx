@@ -18,7 +18,7 @@ export function Hero() {
       <div className="absolute inset-0">
         <Image
           src="/images/hero-cnc.png"
-          alt="ЧПУ станок фрезерует деревянную панель в тёмной мастерской"
+          alt=""
           fill
           priority
           className="object-cover"
