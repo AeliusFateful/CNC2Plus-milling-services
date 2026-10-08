@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === "production";
+const basePath = isProd ? "/CNC2Plus-milling-services" : "";
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
@@ -7,7 +8,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: isProd ? "/CNC2Plus-milling-services" : "",
+  basePath,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   assetPrefix: isProd ? "/CNC2Plus-milling-services/" : "",
   output: "export",
 };
