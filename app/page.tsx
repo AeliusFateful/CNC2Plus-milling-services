@@ -16,9 +16,9 @@ export default function Page() {
       <main>
         <Hero />
         <MaterialsMarquee />
+        <Process />
         <Services />
         <Advantages />
-        <Process />
         <Works />
         <Faq />
         <ContactSection />
