@@ -15,10 +15,10 @@ export function Advantages() {
                 strokeWidth={1.5}
               />
               <div>
-                <h3 className="text-base font-semibold text-foreground">
+                <h3 className="text-lg font-semibold tracking-[0.02em] text-foreground">
                   {title}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-1.5 text-base leading-relaxed text-muted-foreground">
                   {description}
                 </p>
               </div>

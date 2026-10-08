@@ -11,7 +11,7 @@ export default function PrivacyPage() {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-3xl px-4 pb-24 pt-32 md:px-6">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+        <h1 className="text-3xl font-bold leading-snug tracking-[0.03em] text-foreground md:text-4xl">
           Политика конфиденциальности
         </h1>
         <p className="mt-6 text-pretty leading-relaxed text-muted-foreground">

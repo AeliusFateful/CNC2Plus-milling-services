@@ -5,6 +5,7 @@ type SectionHeadingProps = {
   title: string;
   description?: string;
   centered?: boolean;
+  as?: "h1" | "h2";
   eyebrowClassName?: string;
   className?: string;
 };
@@ -14,6 +15,7 @@ export function SectionHeading({
   title,
   description,
   centered = false,
+  as: Heading = "h2",
   eyebrowClassName = "text-sm",
   className,
 }: SectionHeadingProps) {
@@ -27,9 +29,9 @@ export function SectionHeading({
       >
         {eyebrow}
       </span>
-      <h2 className="mt-4 text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+      <Heading className="mt-4 text-balance text-3xl font-bold leading-snug tracking-[0.03em] text-foreground md:text-4xl">
         {title}
-      </h2>
+      </Heading>
       {description && (
         <p className="mt-4 text-pretty text-lg leading-relaxed text-muted-foreground">
           {description}

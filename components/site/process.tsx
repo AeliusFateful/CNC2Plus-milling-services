@@ -13,10 +13,10 @@ export function Process() {
               <div className="font-mono text-5xl font-bold text-primary/25 md:text-6xl">
                 {step.number}
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-foreground">
+              <h3 className="mt-4 text-lg font-semibold tracking-[0.02em] text-foreground">
                 {step.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-2 text-base leading-relaxed text-muted-foreground">
                 {step.description}
               </p>
               {index < STEPS.length - 1 && (
