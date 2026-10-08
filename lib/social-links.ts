@@ -15,3 +15,7 @@ export const socialLinks = [
     label: "Написать в Instagram",
   },
 ] as const;
+
+export const messengerNames = ["WhatsApp", "Instagram", "Telegram"] as const;
+
+export type MessengerName = (typeof messengerNames)[number];

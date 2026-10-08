@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { messengerNames } from "@/lib/social-links";
 
 function escapeHtml(value: string) {
   return value
@@ -16,15 +17,28 @@ type Lead = {
   phone: string;
   service: string;
   comment: string;
+  messenger: string;
+  username: string;
 };
 
-function buildTelegramText({ name, phone, service, comment }: Lead) {
+function buildTelegramText({
+  name,
+  phone,
+  service,
+  comment,
+  messenger,
+  username,
+}: Lead) {
   const lines = [
     "<b>Новая заявка с сайта</b>",
     "",
     `<b>Имя:</b> ${escapeHtml(name)}`,
     `<b>Телефон:</b> ${escapeHtml(phone)}`,
   ];
+  if (username) {
+    lines.push(`<b>Соцсеть:</b> ${escapeHtml(messenger)}`);
+    lines.push(`<b>Юзернейм:</b> @${escapeHtml(username)}`);
+  }
   if (service) lines.push(`<b>Услуга:</b> ${escapeHtml(service)}`);
   if (comment) lines.push(`<b>Комментарий:</b> ${escapeHtml(comment)}`);
   return lines.join("\n");
@@ -38,17 +52,39 @@ export async function POST(request: NextRequest) {
       phone: asTrimmedString(body.phone),
       service: asTrimmedString(body.service),
       comment: asTrimmedString(body.comment),
+      messenger: asTrimmedString(body.messenger),
+      username: asTrimmedString(body.username).replace(/^@+/, ""),
     };
 
     if (!lead.name || lead.name.length > 100) {
       return NextResponse.json({ error: "Укажите имя" }, { status: 400 });
     }
-    if (!lead.phone || lead.phone.length > 30) {
-      return NextResponse.json({ error: "Укажите телефон" }, { status: 400 });
+    const phoneDigits = lead.phone.replace(/\D/g, "").length;
+    if (lead.phone.length > 30 || phoneDigits < 10 || phoneDigits > 15) {
+      return NextResponse.json(
+        { error: "Укажите корректный телефон" },
+        { status: 400 },
+      );
     }
-    if (lead.comment.length > 1000) {
+    if (lead.comment.length > 2000) {
       return NextResponse.json(
         { error: "Комментарий слишком длинный" },
+        { status: 400 },
+      );
+    }
+
+    if (
+      lead.username &&
+      !(messengerNames as readonly string[]).includes(lead.messenger)
+    ) {
+      return NextResponse.json(
+        { error: "Выберите соцсеть, в которую вам написать" },
+        { status: 400 },
+      );
+    }
+    if (lead.username.length > 64) {
+      return NextResponse.json(
+        { error: "Юзернейм слишком длинный" },
         { status: 400 },
       );
     }

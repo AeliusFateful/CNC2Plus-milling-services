@@ -2,7 +2,7 @@ import { Camera, MessageCircle, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { socialLinks } from "@/lib/social-links";
 
-const ICONS: Record<string, typeof Send> = {
+export const SOCIAL_ICONS: Record<string, typeof Send> = {
   WhatsApp: MessageCircle,
   Telegram: Send,
   Instagram: Camera,
@@ -12,7 +12,7 @@ export function SocialLinks({ className }: { className?: string }) {
   return (
     <ul className={cn("flex items-center gap-4", className)}>
       {socialLinks.map((link) => {
-        const Icon = ICONS[link.name] ?? MessageCircle;
+        const Icon = SOCIAL_ICONS[link.name] ?? MessageCircle;
         return (
           <li key={link.name}>
             <a
