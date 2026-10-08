@@ -131,40 +131,6 @@ export const processSteps: readonly ProcessStep[] = [
   },
 ];
 
-export type WorkItem = {
-  src: string;
-  title: string;
-  tag: string;
-  className: string;
-};
-
-export const works: readonly WorkItem[] = [
-  {
-    src: "./images/work-panel.png",
-    title: "Декоративная панель",
-    tag: "Геометрический узор",
-    className: "md:col-span-2 md:row-span-2",
-  },
-  {
-    src: "./images/work-sign.png",
-    title: "Вывеска с подсветкой",
-    tag: "Наружная реклама",
-    className: "",
-  },
-  {
-    src: "./images/work-facade.png",
-    title: "Мебельный фасад",
-    tag: "Кухонный гарнитур",
-    className: "",
-  },
-  {
-    src: "./images/work-partition.png",
-    title: "Интерьерная перегородка",
-    tag: "Ажурная резка",
-    className: "md:col-span-2",
-  },
-];
-
 export type FaqItem = { question: string; answer: string };
 
 export const faqItems: readonly FaqItem[] = [

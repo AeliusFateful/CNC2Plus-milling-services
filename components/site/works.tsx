@@ -1,8 +1,17 @@
-import Image from "next/image";
-import { works as WORKS } from "@/lib/sections-data";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { FeaturedWorks } from "@/components/site/featured-works";
 import { SectionHeading } from "@/components/site/section-heading";
+import { Button } from "@/components/ui/button";
+import { getPortfolioWorks } from "@/lib/portfolio-works";
+import { bentoSpans } from "@/lib/portfolio-meta";
 
 export function Works() {
+  // getPortfolioWorks() отдаёт проекты от новых к старым.
+  const featured = getPortfolioWorks()
+    .filter((work) => work.category === "Интересные")
+    .slice(0, bentoSpans.length);
+
   return (
     <section id="works" className="border-t border-border/60 py-24">
       <div className="mx-auto max-w-360 px-4 md:px-6">
@@ -11,29 +20,18 @@ export function Works() {
           title="Примеры выполненных заказов"
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2">
-          {WORKS.map((work) => (
-            <div
-              key={work.title}
-              className={`group relative aspect-4/3 overflow-hidden rounded-md border border-border/60 ${work.className}`}
-            >
-              <Image
-                src={work.src}
-                alt={work.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-background/90 via-background/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-5">
-                <span className="font-mono text-xs uppercase tracking-[0.15em] text-primary">
-                  {work.tag}
-                </span>
-                <h3 className="mt-1 text-lg font-semibold text-foreground">
-                  {work.title}
-                </h3>
-              </div>
-            </div>
-          ))}
+        <FeaturedWorks works={featured} />
+
+        <div className="mt-10 flex justify-center">
+          <Button
+            render={<Link href="/portfolio" />}
+            nativeButton={false}
+            size="lg"
+            className="h-14 px-8 text-base"
+          >
+            Все работы
+            <ArrowRight />
+          </Button>
         </div>
       </div>
     </section>
