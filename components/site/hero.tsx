@@ -2,10 +2,12 @@ import Image from "next/image";
 import { ArrowRight, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RotatingWord } from "@/components/site/rotating-word";
+import { withBasePath } from "@/lib/base-path";
+import { MaterialsMarquee } from "./materials-marquee";
 
 const STATS = [
-  { value: "500+", label: "заказов выполнено" },
-  { value: "1-3", label: "дня на производство" },
+  { value: "5000+", label: "заказов выполнено" },
+  { value: "от 1", label: "дня на производство" },
   { value: "0.1 мм", label: "точность фрезеровки" },
 ];
 
@@ -13,11 +15,11 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-dvh flex-col overflow-hidden pt-16"
+      className="relative flex min-h-dvh flex-col overflow-hidden pt-19"
     >
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 opacity-60">
         <Image
-          src="./images/hero-cnc.png"
+          src={withBasePath("/images/hero-cnc.png")}
           alt=""
           fill
           priority
@@ -27,10 +29,10 @@ export function Hero() {
         <div className="absolute inset-0 bg-linear-to-r from-background/60 via-transparent to-transparent" />
       </div>
 
-      <div className="relative mx-auto flex w-full max-w-360 flex-1 flex-col justify-center px-4 py-24 md:px-6">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-primary">
+      <div className="relative mx-auto flex w-full max-w-360 flex-1 flex-col justify-center px-4 md:px-6">
+        <div className="flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-primary">
           <Gauge className="size-4" />
-          Точность до 0.1 мм
+          Точно. Быстро. Надёжно.
         </div>
 
         <h1 className="mt-6 max-w-3xl text-balance text-5xl font-bold leading-tight text-foreground md:text-7xl">

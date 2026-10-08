@@ -1,7 +1,7 @@
 import { materials as MATERIALS } from "@/lib/sections-data";
 
 export function MaterialsMarquee() {
-  const items = [...MATERIALS, ...MATERIALS, ...MATERIALS, ...MATERIALS];
+  const items = Array.from({ length: 8 }, () => MATERIALS).flat();
 
   return (
     <div className="relative overflow-hidden border-y border-border/60 bg-card/40 py-5">
