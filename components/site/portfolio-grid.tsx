@@ -19,7 +19,7 @@ const SORT_OPTIONS = [
 type SortOrder = (typeof SORT_OPTIONS)[number]["value"];
 
 export const gridClassName =
-  "grid auto-rows-72 grid-cols-1 grid-flow-dense gap-4 md:grid-cols-5 md:auto-rows-44";
+  "grid auto-rows-108 grid-cols-1 grid-flow-dense gap-4 md:grid-cols-5 md:auto-rows-66";
 
 const chipClassName = (isActive: boolean) =>
   cn(

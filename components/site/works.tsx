@@ -8,9 +8,14 @@ import { bentoSpans } from "@/lib/portfolio-meta";
 
 export function Works() {
   // getPortfolioWorks() отдаёт проекты от новых к старым.
-  const featured = getPortfolioWorks()
-    .filter((work) => work.category === "Интересные")
-    .slice(0, bentoSpans.length);
+  // Сначала «Интересные», недостающие плитки добираются самыми новыми из остальных.
+  const all = getPortfolioWorks();
+  const featured = [
+    ...all.filter((work) => work.category === "Интересные"),
+    ...all.filter((work) => work.category !== "Интересные"),
+  ]
+    .slice(0, bentoSpans.length)
+    .sort((a, b) => b.id - a.id);
 
   return (
     <section id="works" className="border-t border-border/60 py-24">

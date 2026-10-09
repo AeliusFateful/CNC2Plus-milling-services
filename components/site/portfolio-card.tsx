@@ -11,7 +11,7 @@ type PortfolioCardProps = {
 };
 
 export function PortfolioCard({ work, index, className, onOpen }: PortfolioCardProps) {
-  const cover = work.photos[0];
+  const cover = work.photos.at(-1);
 
   return (
     <article
