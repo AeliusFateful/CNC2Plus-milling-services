@@ -10,7 +10,7 @@ export function ContactSection() {
     >
       <div className="absolute inset-0">
         <Image
-          src={withBasePath("/images/work-panel.png")}
+          src={withBasePath("/images/portfolio/7.2.jpg")}
           alt=""
           fill
           className="object-cover"
