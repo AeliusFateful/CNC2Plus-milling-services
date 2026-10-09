@@ -34,7 +34,7 @@ export function Faq() {
                   </span>
                   <Plus
                     className={cn(
-                      "size-5 shrink-0 text-primary transition-transform duration-300",
+                      "size-6 shrink-0 text-primary transition-transform duration-300",
                       isOpen && "rotate-45",
                     )}
                   />
