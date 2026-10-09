@@ -286,7 +286,7 @@ export function ContactDetails() {
             href={`tel:${phones.href}`}
             className="flex items-center gap-3 text-foreground transition-colors hover:text-primary"
           >
-            <span className="flex size-10 items-center justify-center rounded-md border border-border/60 bg-card">
+            <span className="flex size-10 items-center justify-center rounded-md border-[0.5px] border-primary/40 bg-card">
               <Phone className="size-4 text-primary" />
             </span>
             {phones.display}
