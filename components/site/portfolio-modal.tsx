@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize, Minimize, Pause, Play, X } from "lucide-react";
 import type { PortfolioWork } from "@/lib/portfolio-meta";
+import { cn } from "@/lib/utils";
 
 type Slide = { type: "video" | "photo"; src: string };
 
@@ -40,7 +41,7 @@ export function PortfolioModal({ work, onClose }: PortfolioModalProps) {
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
-      className="fixed inset-0 m-auto h-[min(85dvh,40rem)] w-[min(92vw,48rem)] max-h-none max-w-none overflow-hidden rounded-xl border border-white/10 bg-black p-0 text-white backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+      className="fixed inset-0 m-auto h-[min(92dvh,56rem)] w-[min(96vw,80rem)] max-h-none max-w-none overflow-hidden rounded-xl border border-white/10 bg-black p-0 text-white backdrop:bg-black/70 backdrop:backdrop-blur-sm"
     >
       {work && <Viewer key={work.id} work={work} onClose={onClose} />}
     </dialog>
@@ -64,6 +65,8 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      // Стрелки на ползунке перемотки двигают видео, а не листают слайды.
+      if (event.target instanceof HTMLInputElement) return;
       if (event.key === "ArrowLeft") go(-1);
       if (event.key === "ArrowRight") go(1);
     };
@@ -76,8 +79,11 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
       className="absolute inset-0 touch-pan-y select-none"
       onPointerDown={(event) => {
         // На видео горизонтальное движение — это перемотка, а не листание.
-        swipeStart.current =
-          event.target instanceof HTMLVideoElement ? null : event.clientX;
+        // Элементы управления видео тоже не должны листать слайды.
+        const onVideo =
+          event.target instanceof Element &&
+          event.target.closest("video, [data-no-swipe]");
+        swipeStart.current = onVideo ? null : event.clientX;
       }}
       onPointerUp={(event) => {
         if (swipeStart.current === null) return;
@@ -151,19 +157,115 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
   );
 }
 
+function formatTime(seconds: number) {
+  const total = Math.max(0, Math.floor(seconds));
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+}
+
+const controlButtonClass =
+  "flex size-9 shrink-0 items-center justify-center rounded-full text-white transition-colors hover:bg-white/20";
+
+/** Видео всегда без звука: есть пауза, перемотка и полноэкранный режим. */
 function VideoSlide({ src, poster }: { src: string; poster?: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [fullscreen, setFullscreen] = useState(false);
+
+  useEffect(() => {
+    const onChange = () => setFullscreen(document.fullscreenElement === wrapRef.current);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) void video.play();
+    else video.pause();
+  };
+
+  const toggleFullscreen = () => {
+    const wrap = wrapRef.current;
+    const video = videoRef.current as
+      | (HTMLVideoElement & { webkitEnterFullscreen?: () => void })
+      | null;
+    if (!wrap || !video) return;
+    if (document.fullscreenElement) void document.exitFullscreen();
+    else if (wrap.requestFullscreen) void wrap.requestFullscreen();
+    else video.webkitEnterFullscreen?.(); // iPhone: только системный плеер
+  };
+
   return (
-    <video
-      src={src}
-      poster={poster}
-      muted
-      autoPlay
-      loop
-      playsInline
-      preload="auto"
-      disablePictureInPicture
-      controlsList="nodownload noremoteplayback"
-      className="absolute inset-0 size-full object-contain"
-    />
+    <div ref={wrapRef} className="absolute inset-0 bg-black">
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        autoPlay
+        loop
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        onClick={togglePlay}
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
+        onVolumeChange={(e) => {
+          // Звук включать нельзя ни при каких условиях.
+          if (!e.currentTarget.muted) e.currentTarget.muted = true;
+        }}
+        className="absolute inset-0 size-full cursor-pointer object-contain"
+      />
+
+      <div
+        data-no-swipe
+        className={cn(
+          "absolute inset-x-3 flex items-center gap-2 rounded-xl bg-black/60 px-2 py-1 backdrop-blur-sm",
+          fullscreen ? "bottom-4" : "bottom-14",
+        )}
+      >
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-label={playing ? "Пауза" : "Воспроизвести"}
+          className={controlButtonClass}
+        >
+          {playing ? <Pause className="size-5" /> : <Play className="size-5" />}
+        </button>
+        <span className="w-10 shrink-0 text-right font-mono text-xs text-white/80">
+          {formatTime(time)}
+        </span>
+        <input
+          type="range"
+          min={0}
+          max={duration || 0}
+          step={0.05}
+          value={Math.min(time, duration || 0)}
+          onChange={(e) => {
+            const next = Number(e.target.value);
+            if (videoRef.current) videoRef.current.currentTime = next;
+            setTime(next);
+          }}
+          aria-label="Перемотка"
+          className="h-1 min-w-0 flex-1 cursor-pointer accent-primary"
+        />
+        <span className="w-10 shrink-0 font-mono text-xs text-white/80">
+          {formatTime(duration)}
+        </span>
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          aria-label={fullscreen ? "Выйти из полноэкранного режима" : "На весь экран"}
+          className={controlButtonClass}
+        >
+          {fullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+        </button>
+      </div>
+    </div>
   );
 }
