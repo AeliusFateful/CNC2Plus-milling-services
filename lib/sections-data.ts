@@ -11,6 +11,10 @@ import {
   PenTool,
   Recycle,
   Award,
+  MessageSquareText,
+  Calculator,
+  Cog,
+  Truck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -99,35 +103,45 @@ export const advantages: readonly IconCard[] = [
 ];
 
 export type ProcessStep = {
+  icon: LucideIcon;
   number: string;
   title: string;
   description: string;
+  image: string;
 };
 
 export const processSteps: readonly ProcessStep[] = [
   {
+    icon: MessageSquareText,
     number: "01",
     title: "Заявка и консультация",
     description:
       "Вы оставляете заявку или чертёж - обсуждаем материал, размеры и сроки.",
+    image: "/images/Owner/Professional_Call.png",
   },
   {
+    icon: Calculator,
     number: "02",
     title: "Расчёт и макет",
     description:
       "Готовим точный расчёт стоимости и, если нужно, делаем визуализацию и образец.",
+    image: "/images/layout.png",
   },
   {
+    icon: Cog,
     number: "03",
     title: "Резка на ЧПУ",
     description:
       "Фрезеруем заказ на станке с точностью до 0.1 мм, контролируем каждый этап.",
+    image: "/images/Cutting.jpg",
   },
   {
+    icon: Truck,
     number: "04",
     title: "Доставка",
     description:
       "Осуществляем бережную погрузку в вашу или наёмную машину.",
+    image: "/images/transportation.png",
   },
 ];
 
