@@ -56,6 +56,12 @@ export async function POST(request: NextRequest) {
       username: asTrimmedString(body.username).replace(/^@+/, ""),
     };
 
+    if (body.consent !== true) {
+      return NextResponse.json(
+        { error: "Подтвердите согласие с политикой конфиденциальности" },
+        { status: 400 },
+      );
+    }
     if (!lead.name || lead.name.length > 100) {
       return NextResponse.json({ error: "Укажите имя" }, { status: 400 });
     }

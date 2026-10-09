@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Loader2, Phone, Send } from "lucide-react";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -45,6 +46,7 @@ export function LeadForm() {
   const [comment, setComment] = useState("");
   const [messenger, setMessenger] = useState<MessengerName>(messengerNames[0]);
   const [username, setUsername] = useState("");
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -52,6 +54,10 @@ export function LeadForm() {
     e.preventDefault();
     setError(null);
 
+    if (!consent) {
+      setError("Подтвердите согласие с политикой конфиденциальности");
+      return;
+    }
     if (name.trim().length === 0) {
       setError("Укажите ваше имя");
       return;
@@ -74,6 +80,7 @@ export function LeadForm() {
           comment,
           messenger: cleanUsername ? messenger : null,
           username: cleanUsername,
+          consent,
         }),
       });
       const data = await res.json();
@@ -92,6 +99,7 @@ export function LeadForm() {
       setComment("");
       setMessenger(messengerNames[0]);
       setUsername("");
+      setConsent(false);
     } catch (err) {
       setStatus("error");
       const message =
@@ -104,7 +112,7 @@ export function LeadForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-center rounded-md border border-border/60 bg-card p-6 md:p-8"
+      className="flex flex-col self-center rounded-md border border-border/60 bg-card p-6 md:p-8"
     >
       <FieldGroup className="gap-7">
         <Field>
@@ -214,9 +222,29 @@ export function LeadForm() {
             onChange={(e) => setComment(e.target.value)}
             placeholder="Расскажите о задаче: материал, размеры, чертёж"
             rows={4}
+            className="min-h-40"
             maxLength={2000}
           />
         </Field>
+
+        <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-0.5 size-4 shrink-0 cursor-pointer accent-primary"
+          />
+          <span>
+            Я согласен с{" "}
+            <Link
+              href="/privacy"
+              target="_blank"
+              className="text-foreground underline underline-offset-4 transition-colors hover:text-primary"
+            >
+              политикой конфиденциальности
+            </Link>
+          </span>
+        </label>
 
         {error && (
           <Field data-invalid>
@@ -227,7 +255,7 @@ export function LeadForm() {
         <Button
           type="submit"
           size="lg"
-          disabled={status === "loading"}
+          disabled={status === "loading" || !consent}
           className="w-full"
         >
           {status === "loading" ? (
