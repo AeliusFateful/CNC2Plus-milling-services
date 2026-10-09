@@ -11,7 +11,7 @@ export function Faq() {
 
   return (
     <section id="faq" className="border-t border-border/60 bg-card/40 py-24">
-      <div className="mx-auto max-w-6xl px-4 md:px-6">
+      <div className="mx-auto max-w-5xl px-4 md:px-6">
         <SectionHeading
           eyebrow="Вопросы"
           title="Частые вопросы"
