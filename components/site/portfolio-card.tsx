@@ -37,7 +37,7 @@ export function PortfolioCard({ work, index, className, onOpen }: PortfolioCardP
           aria-hidden="true"
         />
       )}
-      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-background via-background/65 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-background via-background/65 to-transparent" />
       <h3 className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-lg font-semibold tracking-[0.02em] text-foreground md:p-6">
         {work.title}
       </h3>
