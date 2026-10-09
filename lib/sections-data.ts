@@ -218,7 +218,7 @@ export const faqItems: readonly FaqItem[] = [
 
 export const materials: readonly string[] = [
   "МДФ",
-  "Различные пластики",
+  "Разнообразные пластики",
   "Фанера",
   "Искусственный камень",
   "Алюминиевый композит",
