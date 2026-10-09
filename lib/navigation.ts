@@ -20,6 +20,6 @@ export const footerNavColumns: readonly (readonly NavItem[])[] = [
     { label: "Преимущества", href: "/#advantages" },
     { label: "Вопросы", href: "/#faq" },
     { label: "О компании", href: "/about" },
-    { label: "Контакты", href: "/about#contacts" },
+    { label: "Контакты", href: "/about#contact" },
   ],
 ];
