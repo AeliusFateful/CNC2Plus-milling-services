@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { SectionHeading } from "@/components/site/section-heading";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
+import { Button } from "@/components/ui/button";
 import { getPortfolioWorks } from "@/lib/portfolio-works";
 
 export const metadata: Metadata = {
@@ -27,6 +30,18 @@ export default function PortfolioPage() {
             />
 
             <PortfolioGrid works={getPortfolioWorks()} />
+
+            <div className="mt-10 flex justify-center">
+              <Button
+                render={<Link href="/#contact" />}
+                nativeButton={false}
+                size="lg"
+                className="h-14 px-8 text-base"
+              >
+                Оставить заявку
+                <ArrowRight />
+              </Button>
+            </div>
           </div>
         </section>
       </main>
