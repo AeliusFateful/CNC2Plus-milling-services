@@ -195,3 +195,59 @@
     animation: none;
   }
 }
+
+/*
+ * Коллаж фото на фоне карточек услуг: три косые полосы. Карточка поделена на три
+ * невидимые зоны (.service-zone) — наведение на зону раскрывает её фото на всю карточку,
+ * остальные схлопываются к краям. Зоны не двигаются, поэтому фото можно переключать,
+ * наводя на другую треть.
+ */
+.service-collage {
+  --full: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  --to-left: polygon(0 0, 0 0, 0 100%, 0 100%);
+  --to-right: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+}
+
+.service-layer {
+  transition: clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Покой: полосы с тонкими косыми разделителями. */
+.service-layer[data-i="0"] {
+  clip-path: polygon(0 0, 36.8% 0, 28.8% 100%, 0 100%);
+}
+.service-layer[data-i="1"] {
+  clip-path: polygon(37.8% 0, 70.2% 0, 62.2% 100%, 29.8% 100%);
+}
+.service-layer[data-i="2"] {
+  clip-path: polygon(71.2% 0, 100% 0, 100% 100%, 63.2% 100%);
+}
+
+/* Невидимые зоны наведения: те же косые трети, что и в покое. */
+.service-zone[data-i="0"] {
+  clip-path: polygon(0 0, 37.3% 0, 29.3% 100%, 0 100%);
+}
+.service-zone[data-i="1"] {
+  clip-path: polygon(37.3% 0, 70.7% 0, 62.7% 100%, 29.3% 100%);
+}
+.service-zone[data-i="2"] {
+  clip-path: polygon(70.7% 0, 100% 0, 100% 100%, 62.7% 100%);
+}
+
+.service-collage:has(.service-zone[data-i="0"]:hover) .service-layer[data-i="0"],
+.service-collage:has(.service-zone[data-i="1"]:hover) .service-layer[data-i="1"],
+.service-collage:has(.service-zone[data-i="2"]:hover) .service-layer[data-i="2"] {
+  clip-path: var(--full);
+}
+
+.service-collage:has(.service-zone[data-i="1"]:hover) .service-layer[data-i="0"],
+.service-collage:has(.service-zone[data-i="2"]:hover) .service-layer[data-i="0"],
+.service-collage:has(.service-zone[data-i="2"]:hover) .service-layer[data-i="1"] {
+  clip-path: var(--to-left);
+}
+
+.service-collage:has(.service-zone[data-i="0"]:hover) .service-layer[data-i="1"],
+.service-collage:has(.service-zone[data-i="0"]:hover) .service-layer[data-i="2"],
+.service-collage:has(.service-zone[data-i="1"]:hover) .service-layer[data-i="2"] {
+  clip-path: var(--to-right);
+}

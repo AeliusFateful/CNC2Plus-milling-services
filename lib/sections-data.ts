@@ -24,42 +24,53 @@ export type IconCard = {
   description: string;
 };
 
-export const services: readonly IconCard[] = [
+export type ServiceCard = IconCard & {
+  /** Три фото из портфолио для коллажа на фоне карточки. */
+  photos: readonly [string, string, string];
+};
+
+export const services: readonly ServiceCard[] = [
   {
     icon: Sofa,
     title: "Мебельные фасады",
     description:
       "Фрезерованные фасады, филёнки и декоративные накладки для корпусной и кухонной мебели.",
+    photos: ["/images/portfolio/6.1.jpg", "/images/portfolio/9.1.jpg", "/images/portfolio/10.1.jpg"],
   },
   {
     icon: LayoutGrid,
     title: "Декоративные панели",
     description:
       "Резные панели со сложным геометрическим или растительным узором для стен и потолков.",
+    photos: ["/images/portfolio/4.1.jpg", "/images/portfolio/4.2.jpg", "/images/portfolio/6.2.jpg"],
   },
   {
     icon: Signpost,
     title: "3D декор",
     description:
       "3D матрицы, декор, логотипы, заготовки для объёмных букв и наружных вывесок и другие изделия сложной формы.",
+    photos: ["/images/portfolio/1.2.jpg", "/images/portfolio/5.2.jpg", "/images/portfolio/11.1.jpg"],
   },
   {
     icon: SquareDashedBottom,
     title: "Перегородки и решётки",
     description:
       "Интерьерные перегородки, экраны и декоративные решётки с ажурной резкой.",
+    photos: ["/images/portfolio/10.2.jpg", "/images/portfolio/7.1.jpg", "/images/portfolio/7.2.jpg"],
   },
   {
     icon: Boxes,
     title: "Упаковка и тара",
     description:
       "Фигурная фанерная упаковка, подставки и короба под индивидуальные размеры.",
+    photos: ["/images/portfolio/12.2.jpg", "/images/portfolio/8.1.jpg", "/images/portfolio/9.2.jpg"],
   },
   {
     icon: Sparkles,
     title: "Прототипы и макеты",
     description:
       "Быстрое изготовление опытных образцов и мелких серий по чертежам в любом формате.",
+    photos: ["/images/portfolio/2.1.jpg", "/images/portfolio/3.3.jpg", "/images/portfolio/1.3.jpg"],
   },
 ];
 
