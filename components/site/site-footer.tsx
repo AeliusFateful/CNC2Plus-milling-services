@@ -1,17 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import { MapPin, Clock } from "lucide-react";
+import { useI18n } from "@/components/i18n-provider";
 import { SocialLinks } from "@/components/site/social-links";
 import { footerNavColumns } from "@/lib/navigation";
 import { phones, siteConfig } from "@/lib/site-config";
 import { withBasePath } from "@/lib/base-path";
 
 export function SiteFooter() {
+  const { t, href, path } = useI18n();
+
   return (
     <footer className="border-t border-border/60 py-16">
       <div className="mx-auto max-w-360 px-4 md:px-6">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
-          <div>
-            <a href="/" className="block w-fit">
+        {/* Блоки переносятся, когда не хватает места. До footer (950px) — по центру (space-evenly), дальше — по краям (space-between), чтобы «Разделы» не сжимались в одну колонку. */}
+        <div className="flex flex-wrap justify-evenly gap-x-8 gap-y-12 footer:justify-between">
+          <div className="w-76 max-w-full footer:w-72">
+            <a href={href("/")} className="block w-fit">
               <img
                 src={withBasePath("/images/logo.svg")}
                 alt={siteConfig.name}
@@ -19,40 +25,19 @@ export function SiteFooter() {
               />
             </a>
             <p className="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
-              Фрезерная резка и гравировка ЧПУ по дереву. Мебельные детали,
-              декоративные панели, вывески и интерьерные изделия на заказ.
+              {t.footer.description}
             </p>
             <div className="mt-6 space-y-1 text-sm text-muted-foreground">
-              <p className="mb-2">{siteConfig.legal.owner}</p>
-              <p>БИН/ИИН - {siteConfig.legal.binIin}</p>
+              <p className="mb-2">{t.contacts.owner}</p>
+              <p>
+                {t.contacts.binIin} - {siteConfig.legal.binIin}
+              </p>
             </div>
           </div>
 
-          <div className="md:justify-self-center">
+          <div className="w-76 max-w-full footer:w-auto">
             <h3 className="font-mono text-sm uppercase tracking-[0.2em] text-primary">
-              Разделы
-            </h3>
-            <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3">
-              {footerNavColumns.map((column, i) => (
-                <ul key={i} className="space-y-3">
-                  {column.map((item) => (
-                    <li key={item.href}>
-                      <a
-                        href={item.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-left md:justify-self-end">
-            <h3 className="font-mono text-sm uppercase tracking-[0.2em] text-primary">
-              Контакты
+              {t.footer.contacts}
             </h3>
             <a
               href={`tel:${phones.href}`}
@@ -63,12 +48,12 @@ export function SiteFooter() {
             <div className="mt-4 space-y-3 text-sm text-muted-foreground">
               <p className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-                {siteConfig.address.full}
+                {t.contacts.addressFull}
               </p>
               <div className="flex gap-2">
                 <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
                 <div className="flex flex-col gap-1">
-                  {siteConfig.schedule.map(({ days, hours }) => (
+                  {t.contacts.schedule.map(({ days, hours }) => (
                     <p key={days}>
                       {days}: {hours}
                     </p>
@@ -78,16 +63,46 @@ export function SiteFooter() {
             </div>
             <SocialLinks className="mt-6" />
           </div>
+
+          <div className="w-76 max-w-full footer:w-auto">
+            <h3 className="font-mono text-sm uppercase tracking-[0.2em] text-primary">
+              {t.footer.sections}
+            </h3>
+            <div className="mt-4 flex flex-wrap gap-x-12 gap-y-3">
+              {footerNavColumns.map((column, i) => (
+                <ul key={i} className="space-y-3">
+                  {column.map((item) => (
+                    <li key={item.href}>
+                      <a
+                        href={href(item.href)}
+                        className="whitespace-nowrap text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {t.nav[item.key]}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 text-sm text-muted-foreground md:flex-row">
-          <p>© 2026 {siteConfig.name}. Все права защищены.</p>
+          <p>
+            © 2026 {siteConfig.name}. {t.footer.rights}
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <Link
-              href="/privacy"
+              href={path("/privacy")}
               className="underline underline-offset-4 transition-colors hover:text-foreground"
             >
-              Политика конфиденциальности
+              {t.footer.privacy}
+            </Link>
+            <Link
+              href={path("/consent")}
+              className="underline underline-offset-4 transition-colors hover:text-foreground"
+            >
+              {t.footer.consent}
             </Link>
           </div>
         </div>
@@ -99,7 +114,7 @@ export function SiteFooter() {
             rel="noreferrer"
             className="mt-8 transition-colors hover:text-primary"
           >
-            <span>Разработка сайта </span>
+            <span>{t.footer.developedBy} </span>
             <span>- Aelius Fateful</span>
           </a>
         </div>

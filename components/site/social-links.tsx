@@ -1,6 +1,9 @@
+"use client";
+
 import { Camera, MessageCircle, Send } from "lucide-react";
+import { useI18n } from "@/components/i18n-provider";
 import { cn } from "@/lib/utils";
-import { socialLinks } from "@/lib/social-links";
+import { getSocialLinks } from "@/lib/social-links";
 
 export const SOCIAL_ICONS: Record<string, typeof Send> = {
   WhatsApp: MessageCircle,
@@ -9,9 +12,12 @@ export const SOCIAL_ICONS: Record<string, typeof Send> = {
 };
 
 export function SocialLinks({ className }: { className?: string }) {
+  const { t } = useI18n();
+  const labels = t.social as Record<string, string>;
+
   return (
     <ul className={cn("flex items-center gap-4", className)}>
-      {socialLinks.map((link) => {
+      {getSocialLinks().map((link) => {
         const Icon = SOCIAL_ICONS[link.name] ?? MessageCircle;
         return (
           <li key={link.name}>
@@ -19,8 +25,8 @@ export function SocialLinks({ className }: { className?: string }) {
               href={link.href}
               target="_blank"
               rel="noreferrer"
-              aria-label={link.label}
-              title={link.label}
+              aria-label={labels[link.name]}
+              title={labels[link.name]}
               className="flex size-10 items-center justify-center rounded-md border-[0.5px] border-primary/40 bg-card text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               <Icon className="size-4" />

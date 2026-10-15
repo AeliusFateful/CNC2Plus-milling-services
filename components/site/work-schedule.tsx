@@ -1,12 +1,22 @@
-import { siteConfig } from "@/lib/site-config";
+"use client";
 
-export function WorkSchedule() {
+import { useI18n } from "@/components/i18n-provider";
+import { cn } from "@/lib/utils";
+
+export function WorkSchedule({ className }: { className?: string }) {
+  const { t } = useI18n();
+
   return (
     // Рамка на обёртке: у таблицы с border-collapse половина границы обрезается overflow-hidden.
-    <div className="w-fit overflow-hidden rounded-md border-[0.5px] border-primary/40 bg-card">
-      <table className="text-sm">
+    <div
+      className={cn(
+        "w-fit overflow-hidden rounded-md border-[0.5px] border-primary/40 bg-card",
+        className,
+      )}
+    >
+      <table className="w-full text-sm">
         <tbody className="divide-y divide-border/60">
-          {siteConfig.schedule.map(({ days, hours }) => (
+          {t.contacts.schedule.map(({ days, hours }) => (
             <tr key={days}>
               <th
                 scope="row"
