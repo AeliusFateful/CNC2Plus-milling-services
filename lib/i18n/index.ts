@@ -21,11 +21,6 @@ export function localePath(lang: Lang, path: string): string {
   return `${KK_PREFIX}${path}`;
 }
 
-/** Определяет язык по пути страницы (без basePath). */
-export function langFromPathname(pathname: string): Lang {
-  return pathname === KK_PREFIX || pathname.startsWith(`${KK_PREFIX}/`) ? "kk" : "ru";
-}
-
 /** Путь той же страницы на другом языке. */
 export function switchLangPath(pathname: string, target: Lang): string {
   const base = pathname === KK_PREFIX ? "/" : pathname.startsWith(`${KK_PREFIX}/`) ? pathname.slice(KK_PREFIX.length) : pathname;

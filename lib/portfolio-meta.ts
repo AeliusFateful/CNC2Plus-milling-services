@@ -51,6 +51,10 @@ export const fallbackMeta = {
   category: "Интересные",
 } as const satisfies Pick<PortfolioMeta, "category">;
 
+/** Сетка портфолио: одна колонка на мобильных, 10 колонок от md (см. getBentoSpan). */
+export const bentoGridClass =
+  "grid auto-rows-108 grid-cols-1 grid-flow-dense gap-4 md:grid-cols-10 md:auto-rows-66";
+
 /**
  * Размеры плиток бенто-сетки (10 колонок = 5 колонок × 2) по порядку на экране.
  * Цикл из 6 плиток собирает 3 полных ряда; первые две плитки делят пополам

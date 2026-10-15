@@ -20,6 +20,12 @@ export const mainPageAnchors: readonly NavItem[] = [
   { key: "contact", href: "/#contact" },
 ];
 
+/** Отдельные страницы в верхнем меню (рядом с «Главной»). */
+export const pageNav: readonly NavItem[] = [
+  { key: "portfolio", href: "/portfolio" },
+  { key: "about", href: "/about" },
+];
+
 export const footerNavColumns: readonly (readonly NavItem[])[] = [
   [
     { key: "process", href: "/#process" },

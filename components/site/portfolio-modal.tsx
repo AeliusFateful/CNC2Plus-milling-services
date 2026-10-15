@@ -12,6 +12,12 @@ const SWIPE_THRESHOLD = 50;
 // Через сколько мс без движения мыши в полноэкранном режиме скрываются элементы управления.
 const FULLSCREEN_IDLE_MS = 1500;
 
+// Круглые кнопки поверх медиа и затемнение под названием вверху.
+const roundButtonClass =
+  "absolute flex size-10 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80";
+const topFadeClass =
+  "pointer-events-none absolute inset-x-0 top-0 bg-linear-to-b from-black/85 via-black/40 to-transparent pb-14";
+
 type PortfolioModalProps = {
   work: PortfolioWork | null;
   onClose: () => void;
@@ -121,7 +127,7 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
           <img key={item.src} src={item.src} alt="" className="hidden" />
         ))}
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start gap-3 bg-linear-to-b from-black/85 via-black/40 to-transparent py-4 pr-16 pb-14 pl-4">
+      <div className={cn(topFadeClass, "flex items-start gap-3 pt-4 pr-16 pl-4")}>
         {count > 1 && (
           <p className="shrink-0 font-mono text-sm text-white/70">
             {index + 1} / {count}
@@ -134,7 +140,7 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
         type="button"
         onClick={onClose}
         aria-label={t.modal.close}
-        className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80"
+        className={cn(roundButtonClass, "right-3 top-3")}
       >
         <X className="size-5" />
       </button>
@@ -145,7 +151,7 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
             type="button"
             onClick={() => go(-1)}
             aria-label={t.modal.previous}
-            className="absolute left-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80"
+            className={cn(roundButtonClass, "left-3 top-1/2 -translate-y-1/2")}
           >
             <ChevronLeft className="size-6" />
           </button>
@@ -153,7 +159,7 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
             type="button"
             onClick={() => go(1)}
             aria-label={t.modal.next}
-            className="absolute right-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80"
+            className={cn(roundButtonClass, "right-3 top-1/2 -translate-y-1/2")}
           >
             <ChevronRight className="size-6" />
           </button>
@@ -257,10 +263,7 @@ function VideoSlide({ src, poster, title }: { src: string; poster?: string; titl
       {/* В полном экране заголовок модалки не виден, поэтому название дублируется здесь (без нумерации). */}
       {fullscreen && (
         <div
-          className={cn(
-            "pointer-events-none absolute inset-x-0 top-0 bg-linear-to-b from-black/85 via-black/40 to-transparent px-4 pt-4 pb-14 transition-opacity duration-300",
-            hideControls && "opacity-0",
-          )}
+          className={cn(topFadeClass, "px-4 pt-4 transition-opacity duration-300", hideControls && "opacity-0")}
         >
           <p className="text-sm text-white/90">{title}</p>
         </div>

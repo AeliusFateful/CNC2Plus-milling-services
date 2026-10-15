@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { PortfolioCard } from "@/components/site/portfolio-card";
-import { gridClassName } from "@/components/site/portfolio-grid";
 import { PortfolioModal } from "@/components/site/portfolio-modal";
-import { getBentoSpan, type PortfolioWork } from "@/lib/portfolio-meta";
+import { bentoGridClass, getBentoSpan, type PortfolioWork } from "@/lib/portfolio-meta";
 import { cn } from "@/lib/utils";
 
 export function FeaturedWorks({ works }: { works: PortfolioWork[] }) {
@@ -12,7 +11,7 @@ export function FeaturedWorks({ works }: { works: PortfolioWork[] }) {
 
   return (
     <>
-      <div className={cn("mt-14 max-md:auto-rows-96", gridClassName)}>
+      <div className={cn("mt-14 max-md:auto-rows-96", bentoGridClass)}>
         {works.map((work, index) => (
           <PortfolioCard
             key={work.id}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MapPin, Clock } from "lucide-react";
 import { useI18n } from "@/components/i18n-provider";
+import { ScheduleList } from "@/components/site/schedule-list";
 import { SocialLinks } from "@/components/site/social-links";
 import { footerNavColumns } from "@/lib/navigation";
 import { phones, siteConfig } from "@/lib/site-config";
@@ -52,13 +53,7 @@ export function SiteFooter() {
               </p>
               <div className="flex gap-2">
                 <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
-                <div className="flex flex-col gap-1">
-                  {t.contacts.schedule.map(({ days, hours }) => (
-                    <p key={days}>
-                      {days}: {hours}
-                    </p>
-                  ))}
-                </div>
+                <ScheduleList />
               </div>
             </div>
             <SocialLinks className="mt-6" />

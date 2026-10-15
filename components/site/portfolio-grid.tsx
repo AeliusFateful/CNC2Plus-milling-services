@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useI18n } from "@/components/i18n-provider";
 import { PortfolioCard } from "@/components/site/portfolio-card";
 import { PortfolioModal } from "@/components/site/portfolio-modal";
 import {
+  bentoGridClass,
   getBentoSpan,
   compareWorks,
   portfolioCategories,
@@ -13,9 +14,6 @@ import {
 import { cn } from "@/lib/utils";
 
 type SortOrder = "new" | "old";
-
-export const gridClassName =
-  "grid auto-rows-108 grid-cols-1 grid-flow-dense gap-4 md:grid-cols-10 md:auto-rows-66";
 
 const chipClassName = (isActive: boolean) =>
   cn(
@@ -51,9 +49,13 @@ export function PortfolioGrid({ works }: { works: PortfolioWork[] }) {
     return () => observer.disconnect();
   }, []);
 
-  const visibleWorks = works
-    .filter((work) => activeCategory === "Все" || work.category === activeCategory)
-    .sort((a, b) => (order === "new" ? compareWorks(b, a) : compareWorks(a, b)));
+  const visibleWorks = useMemo(
+    () =>
+      works
+        .filter((work) => activeCategory === "Все" || work.category === activeCategory)
+        .sort((a, b) => (order === "new" ? compareWorks(b, a) : compareWorks(a, b))),
+    [works, activeCategory, order],
+  );
 
   return (
     <>
@@ -93,7 +95,7 @@ export function PortfolioGrid({ works }: { works: PortfolioWork[] }) {
         </div>
       </div>
 
-      <div className={cn("mt-8", gridClassName)}>
+      <div className={cn("mt-8", bentoGridClass)}>
         {visibleWorks.map((work, index) => (
           <PortfolioCard
             key={work.id}

@@ -6,19 +6,25 @@ import { Button } from "@/components/ui/button";
 import { useI18n } from "@/components/i18n-provider";
 import { LangSwitch } from "@/components/site/lang-switch";
 import { Logo } from "@/components/site/logo";
-import { mainPageAnchors } from "@/lib/navigation";
+import { ScheduleList } from "@/components/site/schedule-list";
+import { mainPageAnchors, pageNav, type NavKey } from "@/lib/navigation";
 import { phones } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
-const PHONE = phones.display;
-const PHONE_HREF = phones.href;
+const navLinkClass = "text-sm text-muted-foreground transition-colors hover:text-foreground";
+
+/** «Оставить заявку» — главное действие, поэтому она выделена оранжевым в любом списке якорей. */
+const anchorTone = (key: NavKey, accentHover: string) =>
+  key === "contact"
+    ? cn("font-medium text-primary", accentHover)
+    : "text-muted-foreground hover:text-foreground";
 
 export function SiteHeader() {
   const { t, href } = useI18n();
-  const ADDRESS = t.contacts.addressShort;
-  const [weekdays] = t.contacts.schedule;
+  const [weekdays, saturday] = t.contacts.schedule;
   const [open, setOpen] = useState(false);
   const [mainOpen, setMainOpen] = useState(false);
+  const closeMenu = () => setOpen(false);
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b m-0 border-border/60 bg-background/80 backdrop-blur-md">
@@ -58,9 +64,7 @@ export function SiteHeader() {
                       onClick={() => setMainOpen(false)}
                       className={cn(
                         "block rounded-sm px-3 py-2 text-sm transition-colors hover:bg-muted",
-                        item.key === "contact"
-                          ? "font-medium text-primary hover:text-primary"
-                          : "text-muted-foreground hover:text-foreground",
+                        anchorTone(item.key, "hover:text-primary"),
                       )}
                     >
                       {t.nav[item.key]}
@@ -70,18 +74,11 @@ export function SiteHeader() {
               </div>
             )}
           </div>
-          <a
-            href={href("/portfolio")}
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t.nav.portfolio}
-          </a>
-          <a
-            href={href("/about")}
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t.nav.about}
-          </a>
+          {pageNav.map((item) => (
+            <a key={item.href} href={href(item.href)} className={navLinkClass}>
+              {t.nav[item.key]}
+            </a>
+          ))}
         </nav>
 
         <div className="ml-3 flex items-center gap-4 md:gap-6">
@@ -89,12 +86,12 @@ export function SiteHeader() {
           <div className="group/schedule relative hidden md:block">
             <div className="flex cursor-default lg:flex-col max-lg:gap-4 gap-2">
               <a
-                href={`tel:${PHONE_HREF}`}
+                href={`tel:${phones.href}`}
                 className="flex items-center gap-2 text-md font-medium text-foreground transition-colors hover:text-primary"
               >
                 <Phone className="size-6 shrink-0 text-primary" />
                 <div className="flex flex-col">
-                  {PHONE}
+                  {phones.display}
                   <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                     {weekdays.days} {weekdays.hours}
                     <ChevronDown className="size-3 transition-transform duration-300 group-hover/schedule:rotate-180" />
@@ -107,7 +104,7 @@ export function SiteHeader() {
               <dl className="flex flex-col gap-1.5 text-xs">
                 <div className="flex items-center justify-between gap-2">
                   <dt className="text-muted-foreground">{t.header.saturday}</dt>
-                  <dd className="font-medium text-foreground">{t.contacts.schedule[1].hours}</dd>
+                  <dd className="font-medium text-foreground">{saturday.hours}</dd>
                 </div>
                 <div className="flex items-center justify-between gap-2">
                   <dt className="text-muted-foreground">{t.header.sunday}</dt>
@@ -133,11 +130,7 @@ export function SiteHeader() {
         <nav className="border-t border-border/60 bg-background px-4 py-4 lg:hidden">
           <div className="flex flex-col gap-4">
             <div>
-              <a
-                href={href("/")}
-                onClick={() => setOpen(false)}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
+              <a href={href("/")} onClick={closeMenu} className={navLinkClass}>
                 {t.header.main}
               </a>
               <div className="mt-3 flex flex-col gap-3 border-l border-border/60 pl-4">
@@ -145,61 +138,41 @@ export function SiteHeader() {
                   <a
                     key={item.href}
                     href={href(item.href)}
-                    onClick={() => setOpen(false)}
-                    className={cn(
-                      "text-sm transition-colors",
-                      item.key === "contact"
-                        ? "font-medium text-primary hover:text-primary/80"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
+                    onClick={closeMenu}
+                    className={cn("text-sm transition-colors", anchorTone(item.key, "hover:text-primary/80"))}
                   >
                     {t.nav[item.key]}
                   </a>
                 ))}
               </div>
             </div>
-            <a
-              href={href("/portfolio")}
-              onClick={() => setOpen(false)}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t.nav.portfolio}
-            </a>
-            <a
-              href={href("/about")}
-              onClick={() => setOpen(false)}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t.nav.about}
-            </a>
+            {pageNav.map((item) => (
+              <a key={item.href} href={href(item.href)} onClick={closeMenu} className={navLinkClass}>
+                {t.nav[item.key]}
+              </a>
+            ))}
             <div className="flex flex-col gap-2 border-t border-border/60 pt-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="size-4 shrink-0 text-primary" />
-                {ADDRESS}
+                {t.contacts.addressShort}
               </div>
               <a
-                href={`tel:${PHONE_HREF}`}
+                href={`tel:${phones.href}`}
                 className="flex items-center gap-2 text-sm font-medium text-foreground"
               >
                 <Phone className="size-4 shrink-0 text-primary" />
-                {PHONE}
+                {phones.display}
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
-                <div className="flex flex-col gap-1">
-                  {t.contacts.schedule.map(({ days, hours }) => (
-                    <p key={days}>
-                      {days}: {hours}
-                    </p>
-                  ))}
-                </div>
+                <ScheduleList />
               </div>
             </div>
             <Button
               size="lg"
               render={<a href={href("/#contact")} />}
               nativeButton={false}
-              onClick={() => setOpen(false)}
+              onClick={closeMenu}
               className="h-12 text-base"
             >
               {t.nav.contact}
