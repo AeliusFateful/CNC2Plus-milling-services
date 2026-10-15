@@ -5,7 +5,8 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { withBasePath } from "@/lib/base-path";
-import { processSteps as STEPS } from "@/lib/sections-data";
+import { useI18n } from "@/components/i18n-provider";
+import { processVisuals as STEPS } from "@/lib/sections-data";
 import { SectionHeading } from "@/components/site/section-heading";
 
 const STACK_QUERY =
@@ -17,6 +18,7 @@ const START_BELOW_SCREEN = 0.3;
 const TOTAL =String(STEPS.length).padStart(2, "0");
 
 export function Process() {
+  const { t } = useI18n();
   const sectionRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -108,10 +110,10 @@ export function Process() {
     <section
       id="process"
       ref={sectionRef}
-      className="group/stage border-t border-border/60 bg-card/40 pt-24 pb-16 [--peek:4rem] data-[stack=true]:min-h-dvh data-[stack=true]:overflow-hidden data-[stack=true]:pt-14 data-[stack=true]:pb-6"
+      className="group/stage border-t border-border/60 bg-card/40 pt-16 pb-12 sm:pt-24 sm:pb-16 [--peek:4rem] data-[stack=true]:min-h-dvh data-[stack=true]:overflow-hidden data-[stack=true]:pt-14 data-[stack=true]:pb-6"
     >
       <div className="mx-auto max-w-360 px-4 md:px-6">
-        <SectionHeading eyebrow="Процесс" title="Как мы работаем" />
+        <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} />
       </div>
 
       <div
@@ -120,14 +122,16 @@ export function Process() {
       >
         <div className="mx-auto flex max-w-360 flex-col gap-6 px-4 group-data-[stack=true]/stage:gap-0 md:px-6">
           <div className="flex flex-col gap-6 group-data-[stack=true]/stage:relative group-data-[stack=true]/stage:block group-data-[stack=true]/stage:h-[calc(var(--card-h)+(var(--n)-1)*var(--peek))] group-data-[stack=true]/stage:[--card-h:max(15rem,min(50dvh,calc(100dvh-15rem-(var(--n)-1)*var(--peek))))]">
-            {STEPS.map(({ icon: Icon, number, title, description, image }, index) => (
+            {STEPS.map(({ icon: Icon, number, image }, index) => {
+              const { title, description } = t.process.steps[index];
+              return (
               <div
                 key={number}
                 ref={(el) => {
                   cardRefs.current[index] = el;
                 }}
                 style={{ zIndex: index }}
-                className="grid grid-cols-1 overflow-hidden rounded-xl will-change-transform contain-layout contain-paint border-[0.5px] border-primary/50 bg-card group-data-[stack=true]/stage:not-first:shadow-[0_-30px_44px_-22px_rgb(0_0_0/0.6)] md:grid-cols-[3fr_2fr] lg:grid-cols-2 group-data-[stack=true]/stage:absolute group-data-[stack=true]/stage:inset-x-0 group-data-[stack=true]/stage:top-0 group-data-[stack=true]/stage:h-(--card-h)"
+                className="grid grid-cols-1 overflow-hidden rounded-xl will-change-transform contain-layout contain-paint border-[0.5px] border-primary/50 bg-card group-data-[stack=true]/stage:not-first:shadow-[0_-30px_44px_-22px_rgb(0_0_0/0.6)] md:grid-cols-2 group-data-[stack=true]/stage:absolute group-data-[stack=true]/stage:inset-x-0 group-data-[stack=true]/stage:top-0 group-data-[stack=true]/stage:h-(--card-h)"
               >
                 <div className="flex min-h-0 flex-col justify-between gap-3 p-5 md:p-4 lg:gap-4 lg:p-6">
                   <Icon
@@ -136,12 +140,12 @@ export function Process() {
                   />
 
                   <div>
-                    <div className="mb-5 flex items-start gap-3 group-data-[stack=true]/stage:mb-0 group-data-[stack=true]/stage:block">
+                    <div className="mb-5 flex items-start gap-3 max-md:items-center group-data-[stack=true]/stage:mb-0 group-data-[stack=true]/stage:block">
                       <Icon
                         className="size-8 shrink-0 text-primary group-data-[stack=true]/stage:hidden"
                         strokeWidth={1.5}
                       />
-                      <h3 className="min-w-0 flex-1 text-2xl leading-tight font-semibold tracking-[0.02em] text-foreground md:text-xl lg:text-3xl">
+                      <h3 className="min-w-0 flex-1 text-xl leading-tight font-semibold tracking-[0.02em] text-foreground lg:text-3xl">
                         {title}
                       </h3>
                       <div className="shrink-0 font-mono leading-none font-bold text-primary/25 group-data-[stack=true]/stage:hidden">
@@ -165,12 +169,13 @@ export function Process() {
                     src={withBasePath(image)}
                     alt={title}
                     fill
-                    sizes="(min-width: 1024px) 50vw, (min-width: 768px) 40vw, 100vw"
+                    sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover"
                   />
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

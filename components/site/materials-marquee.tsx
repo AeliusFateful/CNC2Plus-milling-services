@@ -1,6 +1,9 @@
-import { materials as MATERIALS } from "@/lib/sections-data";
+"use client";
+
+import { useI18n } from "@/components/i18n-provider";
 
 export function MaterialsMarquee() {
+  const MATERIALS = useI18n().t.materials;
   const items = Array.from({ length: 8 }, () => MATERIALS).flat();
 
   return (

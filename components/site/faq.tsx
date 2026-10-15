@@ -3,18 +3,20 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { faqItems as FAQ_ITEMS } from "@/lib/sections-data";
+import { useI18n } from "@/components/i18n-provider";
 import { SectionHeading } from "@/components/site/section-heading";
 
 export function Faq() {
+  const { t } = useI18n();
+  const FAQ_ITEMS = t.faq.items;
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="border-t border-border/60 bg-card/40 py-24">
+    <section id="faq" className="border-t border-border/60 bg-card/40 py-16 sm:py-24">
       <div className="mx-auto max-w-5xl px-4 md:px-6">
         <SectionHeading
-          eyebrow="Вопросы"
-          title="Частые вопросы"
+          eyebrow={t.faq.eyebrow}
+          title={t.faq.title}
           centered
         />
 

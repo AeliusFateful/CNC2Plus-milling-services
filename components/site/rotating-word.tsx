@@ -1,6 +1,10 @@
-import { rotatingWords as WORDS } from "@/lib/sections-data";
+"use client";
+
+import { useI18n } from "@/components/i18n-provider";
 
 export function RotatingWord() {
+  const WORDS = useI18n().t.hero.words;
+
   return (
     <span className="relative inline-block h-[1.4em] overflow-hidden align-middle mb-1">
       <span className="rotating-word-track flex flex-col">

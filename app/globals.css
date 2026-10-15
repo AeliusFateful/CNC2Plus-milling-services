@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --breakpoint-xs: 31.25rem;
+  /* Футер: до 950px контакты уходят вниз (footer: = от 951px). */
+  --breakpoint-footer: 951px;
+}
+
 @theme inline {
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -82,6 +88,19 @@
   --sidebar-accent-foreground: oklch(0.96 0.008 70);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: #f47217;
+}
+
+/* Тонкая тёмная обводка текста поверх фото. */
+@utility text-outline {
+  text-shadow:
+    1px 0 0 var(--background),
+    -1px 0 0 var(--background),
+    0 1px 0 var(--background),
+    0 -1px 0 var(--background),
+    1px 1px 0 var(--background),
+    -1px -1px 0 var(--background),
+    1px -1px 0 var(--background),
+    -1px 1px 0 var(--background);
 }
 
 @layer base {
@@ -197,47 +216,69 @@
 }
 
 /*
- * Коллаж фото на фоне карточек услуг: три косые полосы. Карточка поделена на три
- * невидимые зоны (.service-zone) — наведение на зону раскрывает её фото на всю карточку,
- * остальные схлопываются к краям. Зоны не двигаются, поэтому фото можно переключать,
- * наводя на другую треть.
+ * Коллаж фото на фоне карточек услуг: три косые полосы с одним углом наклона.
+ * Карточка поделена на три невидимые зоны (.service-zone, центральная чуть шире):
+ * наведение на зону раскрывает её фото на всю карточку, остальные уезжают за края.
+ * Зоны не двигаются, поэтому фото можно переключать, наводя на другую треть.
+ *
+ * Все полосы — параллелограммы вида polygon(L+4 0, R+4 0, R-4 100, L-4 100), где L и R —
+ * левая и правая границы в % ширины карточки (за пределами 0–100% полоса скрыта).
+ * Меняются только L и R, поэтому угол наклона не меняется и в анимации.
+ * В покое фото сдвинуто так, что в полосе виден его центр; при раскрытии сдвиг снимается.
  */
 .service-collage {
-  --full: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  --to-left: polygon(0 0, 0 0, 0 100%, 0 100%);
-  --to-right: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+  --full: polygon(-6% 0, 114% 0, 106% 100%, -14% 100%);
+  --to-left: polygon(-6% 0, -6% 0, -14% 100%, -14% 100%);
+  --to-right: polygon(114% 0, 114% 0, 106% 100%, 106% 100%);
 }
 
 .service-layer {
   transition: clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Покой: полосы с тонкими косыми разделителями. */
-.service-layer[data-i="0"] {
-  clip-path: polygon(0 0, 36.8% 0, 28.8% 100%, 0 100%);
-}
-.service-layer[data-i="1"] {
-  clip-path: polygon(37.8% 0, 70.2% 0, 62.2% 100%, 29.8% 100%);
-}
-.service-layer[data-i="2"] {
-  clip-path: polygon(71.2% 0, 100% 0, 100% 100%, 63.2% 100%);
+.service-photo {
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Невидимые зоны наведения: те же косые трети, что и в покое. */
+/* Покой: левая [-10, 29.5], центр [30.5, 69.5], правая [70.5, 110]. */
+.service-layer[data-i="0"] {
+  clip-path: polygon(-6% 0, 33.5% 0, 25.5% 100%, -14% 100%);
+}
+.service-layer[data-i="1"] {
+  clip-path: polygon(34.5% 0, 73.5% 0, 65.5% 100%, 26.5% 100%);
+}
+.service-layer[data-i="2"] {
+  clip-path: polygon(74.5% 0, 114% 0, 106% 100%, 66.5% 100%);
+}
+
+/* В покое в боковых полосах виден центр фото. */
+.service-layer[data-i="0"] .service-photo {
+  transform: translateX(-35%);
+}
+.service-layer[data-i="2"] .service-photo {
+  transform: translateX(35%);
+}
+
+/* Невидимые зоны наведения: те же косые части, границы на 30% и 70%. */
 .service-zone[data-i="0"] {
-  clip-path: polygon(0 0, 37.3% 0, 29.3% 100%, 0 100%);
+  clip-path: polygon(-6% 0, 34% 0, 26% 100%, -14% 100%);
 }
 .service-zone[data-i="1"] {
-  clip-path: polygon(37.3% 0, 70.7% 0, 62.7% 100%, 29.3% 100%);
+  clip-path: polygon(34% 0, 74% 0, 66% 100%, 26% 100%);
 }
 .service-zone[data-i="2"] {
-  clip-path: polygon(70.7% 0, 100% 0, 100% 100%, 62.7% 100%);
+  clip-path: polygon(74% 0, 114% 0, 106% 100%, 66% 100%);
 }
 
 .service-collage:has(.service-zone[data-i="0"]:hover) .service-layer[data-i="0"],
 .service-collage:has(.service-zone[data-i="1"]:hover) .service-layer[data-i="1"],
 .service-collage:has(.service-zone[data-i="2"]:hover) .service-layer[data-i="2"] {
   clip-path: var(--full);
+}
+
+.service-collage:has(.service-zone[data-i="0"]:hover) .service-layer[data-i="0"] .service-photo,
+.service-collage:has(.service-zone[data-i="2"]:hover) .service-layer[data-i="2"] .service-photo {
+  transform: translateX(0);
 }
 
 .service-collage:has(.service-zone[data-i="1"]:hover) .service-layer[data-i="0"],
@@ -250,4 +291,12 @@
 .service-collage:has(.service-zone[data-i="0"]:hover) .service-layer[data-i="2"],
 .service-collage:has(.service-zone[data-i="1"]:hover) .service-layer[data-i="2"] {
   clip-path: var(--to-right);
+}
+
+/*
+ * Казахских букв (Ә, Қ, Ұ…) нет в JetBrains Mono, и в моноширинных подписях они подставлялись из другого шрифта
+ * другого размера. В казахской версии подписи набираются системным шрифтом без засечек целиком.
+ */
+html[lang="kk"] .font-mono {
+  font-family: system-ui, sans-serif;
 }
