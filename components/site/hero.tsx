@@ -7,7 +7,6 @@ import { useI18n } from "@/components/i18n-provider";
 import { Button } from "@/components/ui/button";
 import { RotatingWord } from "@/components/site/rotating-word";
 import { withBasePath } from "@/lib/base-path";
-import { MaterialsMarquee } from "./materials-marquee";
 
 export function Hero() {
   const { t } = useI18n();
@@ -20,7 +19,7 @@ export function Hero() {
     >
       <div className="absolute inset-0 opacity-60">
         <Image
-          src={withBasePath("/images/hero-cnc.png")}
+          src={withBasePath("/images/hero-cnc.webp")}
           alt=""
           fill
           priority

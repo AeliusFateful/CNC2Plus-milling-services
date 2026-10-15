@@ -61,9 +61,9 @@ export type AdvantageVisual = {
 };
 
 export const advantageVisuals: readonly AdvantageVisual[] = [
-  { icon: ShieldCheck, background: "/images/advantages/handshake.png" },
-  { icon: Award, background: "/images/Owner/Boss_CNC.png" },
-  { icon: Clock, background: "/images/advantages/supervisor.png" },
+  { icon: ShieldCheck, background: "/images/advantages/handshake.webp" },
+  { icon: Award, background: "/images/Owner/Boss_CNC.webp" },
+  { icon: Clock, background: "/images/advantages/supervisor.webp" },
   { icon: Recycle, background: "/images/layout_details.jpg" },
 ];
 
@@ -74,8 +74,8 @@ export type ProcessVisual = {
 };
 
 export const processVisuals: readonly ProcessVisual[] = [
-  { icon: MessageSquareText, number: "01", image: "/images/Owner/Professional_Call.png" },
-  { icon: Calculator, number: "02", image: "/images/layout.png" },
+  { icon: MessageSquareText, number: "01", image: "/images/Owner/Professional_Call.webp" },
+  { icon: Calculator, number: "02", image: "/images/layout.webp" },
   { icon: Cog, number: "03", image: "/images/Cutting.jpg" },
-  { icon: Truck, number: "04", image: "/images/transportation.png" },
+  { icon: Truck, number: "04", image: "/images/transportation.webp" },
 ];

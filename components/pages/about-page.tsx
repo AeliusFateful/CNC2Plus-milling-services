@@ -11,7 +11,7 @@ import { withBasePath } from "@/lib/base-path";
 
 const PHOTOS = [
   {
-    src: "/images/Owner/Boss_CNC.png",
+    src: "/images/Owner/Boss_CNC.webp",
     alt: "owner",
     // Высота 60% против 40% у второго фото (пропорции 3:2); лицо чуть приближено через scale.
     box: "aspect-12/13 lg:aspect-7/5 lg:flex-[3_1_auto]",
