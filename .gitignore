@@ -1,44 +1,26 @@
-.vercel/
-
-# Environment variables
-.env*.local
-
-# Common ignores
+# Зависимости и сборка
 node_modules
 .next/
+out
+.vercel/
 
-*.orig
+# Сгенерированное Next.js и TypeScript
+next-env.d.ts
+*.tsbuildinfo
 
-# Created by git when using merge tools for conflicts
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
-*_BACKUP_*.txt
-*_BASE_*.txt
-*_LOCAL_*.txt
-*_REMOTE_*.txt
+# Переменные окружения (токены Telegram и т. д.)
+.env*.local
 
+# Служебные файлы систем и редакторов
 .DS_*
 *.log
-logs
-**/*.backup.*
-**/*.back.*
-
-bower_components
-
-*.sublime*
-
-psd
-thumb
-sketch
-out
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
-# Local History for Visual Studio Code
 .history/
+
+# Локальные настройки Claude Code
+.claude/settings.local.json
