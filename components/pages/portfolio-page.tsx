@@ -1,20 +1,18 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useI18n } from "@/components/i18n-provider";
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { SectionHeading } from "@/components/site/section-heading";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { Button } from "@/components/ui/button";
-import { getPortfolioWorks } from "@/lib/portfolio-works";
+import type { PortfolioWork } from "@/lib/portfolio-meta";
 
-export const metadata: Metadata = {
-  title: "Портфолио CNC++ | Фрезерная резка ЧПУ",
-  description:
-    "Портфолио CNC++: рельефные панели, интерьерные изделия, серийные детали и нестандартные проекты на ЧПУ.",
-};
+export function PortfolioPage({ works }: { works: PortfolioWork[] }) {
+  const { t, path } = useI18n();
 
-export default function PortfolioPage() {
   return (
     <>
       <SiteHeader />
@@ -23,22 +21,22 @@ export default function PortfolioPage() {
           <div className="mx-auto max-w-360 px-4 md:px-6">
             <SectionHeading
               as="h1"
-              eyebrow="Наши работы"
-              title="Портфолио"
-              description="От единичных интерьерных акцентов до повторяемых серий: здесь собраны проекты, в которых точность станка встречается с выразительным материалом и продуманной формой."
+              eyebrow={t.portfolio.eyebrow}
+              title={t.portfolio.title}
+              description={t.portfolio.description}
               className="max-w-3xl"
             />
 
-            <PortfolioGrid works={getPortfolioWorks()} />
+            <PortfolioGrid works={works} />
 
             <div className="mt-10 flex justify-center">
               <Button
-                render={<Link href="/#contact" />}
+                render={<Link href={path("/#contact")} />}
                 nativeButton={false}
                 size="lg"
                 className="h-14 px-8 text-base"
               >
-                Оставить заявку
+                {t.nav.contact}
                 <ArrowRight />
               </Button>
             </div>

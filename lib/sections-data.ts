@@ -5,10 +5,8 @@ import {
   SquareDashedBottom,
   Boxes,
   Sparkles,
-  Ruler,
   Clock,
   ShieldCheck,
-  PenTool,
   Recycle,
   Award,
   MessageSquareText,
@@ -18,218 +16,66 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export type IconCard = {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-};
+/**
+ * Здесь только то, что не зависит от языка: иконки, фото и порядок.
+ * Тексты (по тому же порядку) лежат в словарях lib/i18n.
+ */
 
-export type ServiceCard = IconCard & {
+export type ServiceVisual = {
+  icon: LucideIcon;
   /** Три фото из портфолио для коллажа на фоне карточки. */
   photos: readonly [string, string, string];
 };
 
-export const services: readonly ServiceCard[] = [
+export const serviceVisuals: readonly ServiceVisual[] = [
   {
     icon: Sofa,
-    title: "Мебельные фасады",
-    description:
-      "Фрезерованные фасады, филёнки и декоративные накладки для корпусной и кухонной мебели.",
     photos: ["/images/portfolio/6.1.jpg", "/images/portfolio/9.1.jpg", "/images/portfolio/10.1.jpg"],
   },
   {
     icon: LayoutGrid,
-    title: "Декоративные панели",
-    description:
-      "Резные панели со сложным геометрическим или растительным узором для стен и потолков.",
     photos: ["/images/portfolio/4.1.jpg", "/images/portfolio/4.2.jpg", "/images/portfolio/6.2.jpg"],
   },
   {
     icon: Signpost,
-    title: "3D декор",
-    description:
-      "3D матрицы, декор, логотипы, заготовки для объёмных букв и наружных вывесок и другие изделия сложной формы.",
     photos: ["/images/portfolio/1.2.jpg", "/images/portfolio/5.2.jpg", "/images/portfolio/11.1.jpg"],
   },
   {
     icon: SquareDashedBottom,
-    title: "Перегородки и решётки",
-    description:
-      "Интерьерные перегородки, экраны и декоративные решётки с ажурной резкой.",
     photos: ["/images/portfolio/10.2.jpg", "/images/portfolio/7.1.jpg", "/images/portfolio/7.2.jpg"],
   },
   {
     icon: Boxes,
-    title: "Упаковка и тара",
-    description:
-      "Фигурная фанерная упаковка, подставки и короба под индивидуальные размеры.",
     photos: ["/images/portfolio/12.2.jpg", "/images/portfolio/8.1.jpg", "/images/portfolio/9.2.jpg"],
   },
   {
     icon: Sparkles,
-    title: "Прототипы и макеты",
-    description:
-      "Быстрое изготовление опытных образцов и мелких серий по чертежам в любом формате.",
     photos: ["/images/portfolio/2.1.jpg", "/images/portfolio/3.3.jpg", "/images/portfolio/1.3.jpg"],
   },
 ];
 
-export const advantages: readonly IconCard[] = [
-  {
-    icon: Ruler,
-    title: "Точность 0.1 мм",
-    description:
-      "Современные станки с ЧПУ и калиброванная оснастка дают стабильный результат на каждой детали.",
-  },
-  {
-    icon: Clock,
-    title: "Сроки от 1 дня",
-    description:
-      "Срок выполнения заказа - от одного рабочего дня. Большинство заказов мы выполняем за один-три рабочих дня без потери качества.",
-  },
-  {
-    icon: PenTool,
-    title: "Разработка макета",
-    description:
-      "Поможем спроектировать и подготовить файл под фрезеровку.",
-  },
-  {
-    icon: Award,
-    title: "Опыт работы",
-    description:
-      "Опыт работ различной направленности и сложности - 18 лет.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Гарантия на работы",
-    description:
-      "Даём гарантию на точность геометрии и качество обработки.",
-  },
-  {
-    icon: Recycle,
-    title: "Экономный раскрой",
-    description:
-      "Оптимизируем раскладку деталей на листе, снижая расход материала и стоимость заказа.",
-  },
+export type AdvantageVisual = {
+  icon: LucideIcon;
+  /** Фото на фоне слайда (только в слайдере на десктопе). */
+  background?: string;
+};
+
+export const advantageVisuals: readonly AdvantageVisual[] = [
+  { icon: ShieldCheck, background: "/images/advantages/handshake.png" },
+  { icon: Award, background: "/images/Owner/Boss_CNC.png" },
+  { icon: Clock, background: "/images/advantages/supervisor.png" },
+  { icon: Recycle, background: "/images/layout_details.jpg" },
 ];
 
-export type ProcessStep = {
+export type ProcessVisual = {
   icon: LucideIcon;
   number: string;
-  title: string;
-  description: string;
   image: string;
 };
 
-export const processSteps: readonly ProcessStep[] = [
-  {
-    icon: MessageSquareText,
-    number: "01",
-    title: "Заявка и консультация",
-    description:
-      "Вы оставляете заявку или чертёж - обсуждаем материал, размеры и сроки.",
-    image: "/images/Owner/Professional_Call.png",
-  },
-  {
-    icon: Calculator,
-    number: "02",
-    title: "Расчёт и макет",
-    description:
-      "Готовим точный расчёт стоимости и, если нужно, делаем визуализацию и образец.",
-    image: "/images/layout.png",
-  },
-  {
-    icon: Cog,
-    number: "03",
-    title: "Резка на ЧПУ",
-    description:
-      "Фрезеруем заказ на станке с точностью до 0.1 мм, контролируем каждый этап.",
-    image: "/images/Cutting.jpg",
-  },
-  {
-    icon: Truck,
-    number: "04",
-    title: "Доставка",
-    description:
-      "Осуществляем бережную погрузку в вашу или наёмную машину.",
-    image: "/images/transportation.png",
-  },
-];
-
-export type FaqItem = { question: string; answer: string };
-
-export const faqItems: readonly FaqItem[] = [
-  {
-    question: "Как передать чертёж на фрезеровку?",
-    answer:
-      "Принимаем файлы в форматах DXF, AI, CDR, SVG или PDF. Если готового чертежа нет - пришлите эскиз или фото, наш конструктор подготовит макет под станок.",
-  },
-  {
-    question: "Какой минимальный объём заказа?",
-    answer:
-      "Работаем и с единичными деталями, и с сериями от сотен изделий. Минимального порога по объёму нет, но при больших партиях действует гибкая цена за единицу.",
-  },
-  {
-    question: "Сколько стоит фрезеровка?",
-    answer:
-      "Цена зависит от материала, толщины листа, сложности контура и времени обработки. Пришлите чертёж или описание задачи - рассчитаем стоимость в течение рабочего дня.",
-  },
-  {
-    question: "Можно ли заказать доставку?",
-    answer:
-      "Да, доставляем готовые изделия по Астане и отправляем в другие города Казахстана транспортными компаниями. Крупногабаритные заказы можно забрать самовывозом.",
-  },
-  {
-    question: "Работаете со своим материалом или заказчика?",
-    answer:
-      "Да, можем фрезеровать материал, предоставленный заказчиком, либо подобрать и закупить нужный материал под ваш проект.",
-  },
-  {
-    question: "Какие материалы и толщины вы фрезеруете?",
-    answer:
-      "Фанеру, массив дерева, МДФ, акрил и ПВХ, композитные панели и многие другие. Если сомневаетесь в материале, пришлите образец для пробы.",
-  },
-  {
-    question: "Какая точность обработки на станке?",
-    answer:
-      "Рабочая точность позиционирования - ±0,1 мм, повторяемость по серии - в пределах 0,05 мм. Этого достаточно для мебельных соединений, посадочных пазов и сборки без подгонки.",
-  },
-  {
-    question: "Сколько времени занимает изготовление заказа?",
-    answer:
-      "Простые детали делаем от 1 рабочего дня, средние партии - от 3 до 7 дней. Точный срок называем после расчёта: он зависит от загрузки станка, материала и объёма.",
-  },
-  {
-    question: "Нужна ли предоплата?",
-    answer:
-      "Для физических лиц - предоплата 50%, остаток при получении. Для юридических лиц работаем по договору и счёту с оплатой по факту или по этапам.",
-  },
-  {
-    question: "Делаете ли вы макет и подготовку файла к производству?",
-    answer:
-      "Да, наш конструктор доводит ваш эскиз или чертёж до управляющей программы для станка: раскладка деталей, компенсация радиуса фрезы, мостики и точки крепления. Услуга оплачивается отдельно и обсуждается при расчёте.",
-  },
-  {
-    question: "Можно ли заказать сборку и покраску готовых изделий?",
-    answer:
-      "Да, помимо фрезеровки предлагаем шлифовку, сборку, тонировку, покраску и покрытие лаком или маслом. Опишите желаемый результат - включим эти работы в смету.",
-  },
-];
-
-export const materials: readonly string[] = [
-  "МДФ",
-  "Разнообразные пластики",
-  "Фанера",
-  "Искусственный камень",
-  "Алюминиевый композит",
-  "Массив дерева",
-];
-
-export const rotatingWords: readonly string[] = [
-  "дереву",
-  "пластику",
-  "фанере",
-  "МДФ",
-  "акрилу",
-  "камню",
+export const processVisuals: readonly ProcessVisual[] = [
+  { icon: MessageSquareText, number: "01", image: "/images/Owner/Professional_Call.png" },
+  { icon: Calculator, number: "02", image: "/images/layout.png" },
+  { icon: Cog, number: "03", image: "/images/Cutting.jpg" },
+  { icon: Truck, number: "04", image: "/images/transportation.png" },
 ];

@@ -1,25 +1,36 @@
-export type NavItem = { label: string; href: string };
+/** Ключ раздела: подпись берётся из словаря (`t.nav[key]`), адрес — отсюда. */
+export type NavKey =
+  | "process"
+  | "services"
+  | "advantages"
+  | "works"
+  | "faq"
+  | "contact"
+  | "portfolio"
+  | "about";
+
+export type NavItem = { key: NavKey; href: string };
 
 export const mainPageAnchors: readonly NavItem[] = [
-  { label: "Как мы работаем", href: "/#process" },
-  { label: "Что вырезаем", href: "/#services" },
-  { label: "Преимущества", href: "/#advantages" },
-  { label: "Работы", href: "/#works" },
-  { label: "Вопросы", href: "/#faq" },
-  { label: "Оставить заявку", href: "/#contact" },
+  { key: "process", href: "/#process" },
+  { key: "services", href: "/#services" },
+  { key: "advantages", href: "/#advantages" },
+  { key: "works", href: "/#works" },
+  { key: "faq", href: "/#faq" },
+  { key: "contact", href: "/#contact" },
 ];
 
 export const footerNavColumns: readonly (readonly NavItem[])[] = [
   [
-    { label: "Как мы работаем", href: "/#process" },
-    { label: "Что вырезаем", href: "/#services" },
-    { label: "Работы", href: "/#works" },
-    { label: "Портфолио", href: "/portfolio" },
+    { key: "process", href: "/#process" },
+    { key: "services", href: "/#services" },
+    { key: "advantages", href: "/#advantages" },
+    { key: "works", href: "/#works" },
   ],
   [
-    { label: "Преимущества", href: "/#advantages" },
-    { label: "Вопросы", href: "/#faq" },
-    { label: "О компании", href: "/about" },
-    { label: "Контакты", href: "/about#contact" },
+    { key: "portfolio", href: "/portfolio" },
+    { key: "faq", href: "/#faq" },
+    { key: "contact", href: "/#contact" },
+    { key: "about", href: "/about" },
   ],
 ];
