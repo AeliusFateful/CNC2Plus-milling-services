@@ -4,7 +4,7 @@ import { useState } from "react";
 import { PortfolioCard } from "@/components/site/portfolio-card";
 import { gridClassName } from "@/components/site/portfolio-grid";
 import { PortfolioModal } from "@/components/site/portfolio-modal";
-import { bentoSpans, type PortfolioWork } from "@/lib/portfolio-meta";
+import { getBentoSpan, type PortfolioWork } from "@/lib/portfolio-meta";
 import { cn } from "@/lib/utils";
 
 export function FeaturedWorks({ works }: { works: PortfolioWork[] }) {
@@ -12,13 +12,13 @@ export function FeaturedWorks({ works }: { works: PortfolioWork[] }) {
 
   return (
     <>
-      <div className={cn("mt-14", gridClassName)}>
+      <div className={cn("mt-14 max-md:auto-rows-96", gridClassName)}>
         {works.map((work, index) => (
           <PortfolioCard
             key={work.id}
             work={work}
             index={index}
-            className={bentoSpans[index % bentoSpans.length]}
+            className={getBentoSpan(index)}
             onOpen={setOpenWork}
           />
         ))}

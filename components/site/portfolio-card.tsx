@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { Play } from "lucide-react";
+import { useI18n } from "@/components/i18n-provider";
 import type { PortfolioWork } from "@/lib/portfolio-meta";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +14,8 @@ type PortfolioCardProps = {
 };
 
 export function PortfolioCard({ work, index, className, onOpen }: PortfolioCardProps) {
+  const { t, workTitle } = useI18n();
+  const title = workTitle(work);
   const cover = work.photos.at(-1);
 
   return (
@@ -39,7 +44,7 @@ export function PortfolioCard({ work, index, className, onOpen }: PortfolioCardP
       )}
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-background via-background/65 to-transparent" />
       <h3 className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-lg font-semibold tracking-[0.02em] text-foreground md:p-6">
-        {work.title}
+        {title}
       </h3>
       {work.video && (
         <span
@@ -52,7 +57,7 @@ export function PortfolioCard({ work, index, className, onOpen }: PortfolioCardP
       <button
         type="button"
         onClick={() => onOpen(work)}
-        aria-label={`Открыть: ${work.title}`}
+        aria-label={`${t.modal.open}: ${title}`}
         className="absolute inset-0 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
       />
     </article>

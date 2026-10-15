@@ -2,12 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Maximize, Minimize, Pause, Play, X } from "lucide-react";
+import { useI18n } from "@/components/i18n-provider";
 import type { PortfolioWork } from "@/lib/portfolio-meta";
 import { cn } from "@/lib/utils";
 
 type Slide = { type: "video" | "photo"; src: string };
 
 const SWIPE_THRESHOLD = 50;
+// Через сколько мс без движения мыши в полноэкранном режиме скрываются элементы управления.
+const FULLSCREEN_IDLE_MS = 1500;
 
 type PortfolioModalProps = {
   work: PortfolioWork | null;
@@ -15,6 +18,7 @@ type PortfolioModalProps = {
 };
 
 export function PortfolioModal({ work, onClose }: PortfolioModalProps) {
+  const { workTitle } = useI18n();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export function PortfolioModal({ work, onClose }: PortfolioModalProps) {
     <dialog
       ref={dialogRef}
       onClose={onClose}
-      aria-label={work?.title}
+      aria-label={work ? workTitle(work) : undefined}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -49,6 +53,8 @@ export function PortfolioModal({ work, onClose }: PortfolioModalProps) {
 }
 
 function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void }) {
+  const { t, workTitle } = useI18n();
+  const title = workTitle(work);
   const slides: Slide[] = [
     ...(work.video ? [{ type: "video" as const, src: work.video }] : []),
     ...work.photos.map((src) => ({ type: "photo" as const, src })),
@@ -94,13 +100,13 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
     >
       {slide ? (
         slide.type === "video" ? (
-          <VideoSlide key={slide.src} src={slide.src} poster={work.photos[0]} />
+          <VideoSlide key={slide.src} src={slide.src} poster={work.photos[0]} title={title} />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             key={slide.src}
             src={slide.src}
-            alt={`${work.title} — фото ${index + 1}`}
+            alt={`${title} — ${t.modal.photo} ${index + 1}`}
             draggable={false}
             className="absolute inset-0 size-full object-contain"
           />
@@ -115,19 +121,19 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
           <img key={item.src} src={item.src} alt="" className="hidden" />
         ))}
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-linear-to-t from-black/85 via-black/40 to-transparent px-4 pb-3 pt-14">
-        <p className="text-sm text-white/90">{work.title}</p>
+      <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start gap-3 bg-linear-to-b from-black/85 via-black/40 to-transparent py-4 pr-16 pb-14 pl-4">
         {count > 1 && (
           <p className="shrink-0 font-mono text-sm text-white/70">
             {index + 1} / {count}
           </p>
         )}
+        <p className="text-sm text-white/90">{title}</p>
       </div>
 
       <button
         type="button"
         onClick={onClose}
-        aria-label="Закрыть"
+        aria-label={t.modal.close}
         className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80"
       >
         <X className="size-5" />
@@ -138,7 +144,7 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
           <button
             type="button"
             onClick={() => go(-1)}
-            aria-label="Предыдущий"
+            aria-label={t.modal.previous}
             className="absolute left-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80"
           >
             <ChevronLeft className="size-6" />
@@ -146,7 +152,7 @@ function Viewer({ work, onClose }: { work: PortfolioWork; onClose: () => void })
           <button
             type="button"
             onClick={() => go(1)}
-            aria-label="Следующий"
+            aria-label={t.modal.next}
             className="absolute right-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/80"
           >
             <ChevronRight className="size-6" />
@@ -166,19 +172,42 @@ const controlButtonClass =
   "flex size-9 shrink-0 items-center justify-center rounded-full text-white transition-colors hover:bg-white/20";
 
 /** Видео всегда без звука: есть пауза, перемотка и полноэкранный режим. */
-function VideoSlide({ src, poster }: { src: string; poster?: string }) {
+function VideoSlide({ src, poster, title }: { src: string; poster?: string; title: string }) {
+  const { t } = useI18n();
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
+  const [idle, setIdle] = useState(false);
+  const hideControls = fullscreen && idle;
 
   useEffect(() => {
     const onChange = () => setFullscreen(document.fullscreenElement === wrapRef.current);
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
+
+  // В полноэкранном режиме элементы управления и курсор скрываются, если мышь не двигалась.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!fullscreen || !wrap) return;
+    let timer = 0;
+    const wake = () => {
+      setIdle(false);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setIdle(true), FULLSCREEN_IDLE_MS);
+    };
+    wake();
+    wrap.addEventListener("pointermove", wake);
+    wrap.addEventListener("pointerdown", wake);
+    return () => {
+      window.clearTimeout(timer);
+      wrap.removeEventListener("pointermove", wake);
+      wrap.removeEventListener("pointerdown", wake);
+    };
+  }, [fullscreen]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -219,20 +248,35 @@ function VideoSlide({ src, poster }: { src: string; poster?: string }) {
           // Звук включать нельзя ни при каких условиях.
           if (!e.currentTarget.muted) e.currentTarget.muted = true;
         }}
-        className="absolute inset-0 size-full cursor-pointer object-contain"
+        className={cn(
+          "absolute inset-0 size-full object-contain",
+          hideControls ? "cursor-none" : "cursor-pointer",
+        )}
       />
+
+      {/* В полном экране заголовок модалки не виден, поэтому название дублируется здесь (без нумерации). */}
+      {fullscreen && (
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-0 bg-linear-to-b from-black/85 via-black/40 to-transparent px-4 pt-4 pb-14 transition-opacity duration-300",
+            hideControls && "opacity-0",
+          )}
+        >
+          <p className="text-sm text-white/90">{title}</p>
+        </div>
+      )}
 
       <div
         data-no-swipe
         className={cn(
-          "absolute inset-x-3 flex items-center gap-2 rounded-xl bg-black/60 px-2 py-1 backdrop-blur-sm",
-          fullscreen ? "bottom-4" : "bottom-14",
+          "absolute inset-x-3 bottom-4 flex items-center gap-2 rounded-xl bg-black/60 px-2 py-1 backdrop-blur-sm transition-opacity duration-300",
+          hideControls && "pointer-events-none opacity-0",
         )}
       >
         <button
           type="button"
           onClick={togglePlay}
-          aria-label={playing ? "Пауза" : "Воспроизвести"}
+          aria-label={playing ? t.modal.pause : t.modal.play}
           className={controlButtonClass}
         >
           {playing ? <Pause className="size-5" /> : <Play className="size-5" />}
@@ -251,7 +295,7 @@ function VideoSlide({ src, poster }: { src: string; poster?: string }) {
             if (videoRef.current) videoRef.current.currentTime = next;
             setTime(next);
           }}
-          aria-label="Перемотка"
+          aria-label={t.modal.seek}
           className="h-1 min-w-0 flex-1 cursor-pointer accent-primary"
         />
         <span className="w-10 shrink-0 font-mono text-xs text-white/80">
@@ -260,7 +304,7 @@ function VideoSlide({ src, poster }: { src: string; poster?: string }) {
         <button
           type="button"
           onClick={toggleFullscreen}
-          aria-label={fullscreen ? "Выйти из полноэкранного режима" : "На весь экран"}
+          aria-label={fullscreen ? t.modal.exitFullscreen : t.modal.fullscreen}
           className={controlButtonClass}
         >
           {fullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
