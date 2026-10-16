@@ -305,9 +305,7 @@ export const ru = {
     name: "Имя",
     namePlaceholder: "Как вас зовут",
     phone: "Телефон",
-    messengerTitle: "Куда вам лучше написать",
-    usernamePlaceholder: "@username (необязательно)",
-    usernameAria: "Юзернейм в выбранной соцсети (необязательно)",
+    whatsappNote: "Напишем вам в WhatsApp на этот номер",
     service: "Услуга",
     servicePlaceholder: "Выберите услугу",
     serviceOptions: [

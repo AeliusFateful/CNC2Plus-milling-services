@@ -46,19 +46,6 @@ function FieldLabel({
   );
 }
 
-function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="field-label"
-      className={cn(
-        "flex w-fit items-center gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
 function FieldError({ className, children, ...props }: React.ComponentProps<"div">) {
   if (!children) return null;
 
@@ -74,4 +61,4 @@ function FieldError({ className, children, ...props }: React.ComponentProps<"div
   );
 }
 
-export { Field, FieldLabel, FieldError, FieldGroup, FieldTitle };
+export { Field, FieldLabel, FieldError, FieldGroup };

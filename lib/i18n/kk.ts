@@ -307,9 +307,7 @@ export const kk: Dictionary = {
     name: "Аты",
     namePlaceholder: "Сізді қалай атайды",
     phone: "Телефон",
-    messengerTitle: "Сізге қайда жазған дұрыс",
-    usernamePlaceholder: "@username (міндетті емес)",
-    usernameAria: "Таңдалған әлеуметтік желідегі пайдаланушы аты (міндетті емес)",
+    whatsappNote: "Осы нөмір бойынша сізге WhatsApp-қа жазамыз",
     service: "Қызмет",
     servicePlaceholder: "Қызметті таңдаңыз",
     serviceOptions: [

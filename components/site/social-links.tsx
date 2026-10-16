@@ -3,9 +3,9 @@
 import { Camera, MessageCircle, Send, type LucideIcon } from "lucide-react";
 import { useI18n } from "@/components/i18n-provider";
 import { cn } from "@/lib/utils";
-import { socialLinks, type MessengerName } from "@/lib/social-links";
+import { socialLinks, type SocialName } from "@/lib/social-links";
 
-export const SOCIAL_ICONS: Record<MessengerName, LucideIcon> = {
+const SOCIAL_ICONS: Record<SocialName, LucideIcon> = {
   WhatsApp: MessageCircle,
   Telegram: Send,
   Instagram: Camera,

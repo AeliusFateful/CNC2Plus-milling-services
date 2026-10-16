@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Loader2, Phone, Send } from "lucide-react";
 import { useI18n } from "@/components/i18n-provider";
 import { SectionHeading } from "@/components/site/section-heading";
-import { SOCIAL_ICONS, SocialLinks } from "@/components/site/social-links";
+import { SocialLinks } from "@/components/site/social-links";
 import { WorkSchedule } from "@/components/site/work-schedule";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,6 @@ import {
   FieldGroup,
   FieldLabel,
   FieldError,
-  FieldTitle,
 } from "@/components/ui/field";
 import {
   Select,
@@ -28,7 +27,6 @@ import {
 import { phones } from "@/lib/site-config";
 import { ru } from "@/lib/i18n/ru";
 import { formatPhone, isPhoneComplete, isPhoneEmpty } from "@/lib/phone";
-import { messengerNames, type MessengerName } from "@/lib/social-links";
 
 // Оператору в Telegram услуга приходит всегда на русском, независимо от языка сайта.
 const SERVICE_VALUES = ru.form.serviceOptions;
@@ -41,8 +39,6 @@ export function LeadForm() {
   const [phone, setPhone] = useState("");
   const [service, setService] = useState<string | null>(null);
   const [comment, setComment] = useState("");
-  const [messenger, setMessenger] = useState<MessengerName>(messengerNames[0]);
-  const [username, setUsername] = useState("");
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -63,12 +59,6 @@ export function LeadForm() {
       setError(t.form.errors.phone);
       return;
     }
-    // В WhatsApp пишем на указанный телефон, юзернейм не нужен и не отправляется.
-    const cleanUsername =
-      messenger === "WhatsApp" ? "" : username.trim().replace(/^@+/, "");
-    // Instagram без юзернейма писать некуда, поэтому соцсеть передаём, только если есть юзернейм.
-    const sendMessenger = messenger === "Instagram" && !cleanUsername ? null : messenger;
-
     setStatus("loading");
     try {
       const res = await fetch("/api/lead", {
@@ -79,8 +69,6 @@ export function LeadForm() {
           phone,
           service,
           comment,
-          messenger: sendMessenger,
-          username: cleanUsername,
           consent,
           lang,
         }),
@@ -99,8 +87,6 @@ export function LeadForm() {
       setPhone("");
       setService(null);
       setComment("");
-      setMessenger(messengerNames[0]);
-      setUsername("");
       setConsent(false);
     } catch (err) {
       setStatus("error");
@@ -159,44 +145,7 @@ export function LeadForm() {
             autoCapitalize="none"
             autoCorrect="off"
           />
-        </Field>
-
-        <Field aria-labelledby="messenger-title" className="gap-3">
-          <FieldTitle id="messenger-title">{t.form.messengerTitle}</FieldTitle>
-          <div className="flex flex-wrap gap-2">
-            {messengerNames.map((item) => {
-              const Icon = SOCIAL_ICONS[item];
-              const selected = messenger === item;
-              return (
-                <Button
-                  key={item}
-                  type="button"
-                  size="lg"
-                  variant={selected ? "solid" : "outline"}
-                  aria-pressed={selected}
-                  onClick={() => setMessenger(item)}
-                  className="min-w-fit flex-1"
-                >
-                  <Icon data-icon="inline-start" />
-                  {item}
-                </Button>
-              );
-            })}
-          </div>
-          {messenger !== "WhatsApp" && (
-            <Input
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder={t.form.usernamePlaceholder}
-              aria-label={t.form.usernameAria}
-              autoComplete="off"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              maxLength={64}
-            />
-          )}
+          <p className="text-sm text-muted-foreground">{t.form.whatsappNote}</p>
         </Field>
 
         <Field>

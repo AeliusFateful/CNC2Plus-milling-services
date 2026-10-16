@@ -14,6 +14,4 @@ export const socialLinks = [
   { name: "Instagram", href: "https://www.instagram.com/cnc2plus/" },
 ] as const;
 
-export const messengerNames = ["WhatsApp", "Instagram", "Telegram"] as const;
-
-export type MessengerName = (typeof messengerNames)[number];
+export type SocialName = (typeof socialLinks)[number]["name"];
