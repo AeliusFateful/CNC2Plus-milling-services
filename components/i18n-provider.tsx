@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo } from "react";
 import { withBasePath } from "@/lib/base-path";
-import { getDictionary, localePath, type Dictionary, type Lang } from "@/lib/i18n";
+import { localePath, type Dictionary, type Lang } from "@/lib/i18n";
 
 type I18n = {
   lang: Lang;
@@ -17,23 +17,30 @@ type I18n = {
 
 const I18nContext = createContext<I18n | null>(null);
 
-export function I18nProvider({ lang, children }: { lang: Lang; children: React.ReactNode }) {
+export function I18nProvider({
+  lang,
+  dictionary,
+  children,
+}: {
+  lang: Lang;
+  dictionary: Dictionary;
+  children: React.ReactNode;
+}) {
   const value = useMemo<I18n>(
     () => ({
       lang,
-      t: getDictionary(lang),
+      t: dictionary,
       path: (path) => localePath(lang, path),
       href: (path) => withBasePath(localePath(lang, path)),
       workTitle: (work) => {
-        const dict = getDictionary(lang);
-        const localized = dict.portfolio.titles[work.id];
+        const localized = dictionary.portfolio.titles[work.id];
         if (localized) return localized;
         // Проекты без названия получают «Проект N» — для казахского переводим только префикс.
-        if (lang === "kk" && /^Проект \d+$/.test(work.title)) return `${dict.portfolio.project} ${work.id}`;
+        if (lang === "kk" && /^Проект \d+$/.test(work.title)) return `${dictionary.portfolio.project} ${work.id}`;
         return work.title;
       },
     }),
-    [lang],
+    [lang, dictionary],
   );
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }

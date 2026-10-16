@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useI18n } from "@/components/i18n-provider";
 import { PortfolioCard } from "@/components/site/portfolio-card";
-import { PortfolioModal } from "@/components/site/portfolio-modal";
+import { PortfolioModal } from "@/components/site/portfolio-modal-lazy";
 import {
   bentoGridClass,
   getBentoSpan,

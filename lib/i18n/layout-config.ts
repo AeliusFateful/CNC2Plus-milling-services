@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { withBasePath } from "@/lib/base-path";
-import { getDictionary, type Lang } from "@/lib/i18n";
+import type { Lang } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 /** Метаданные корневого layout: название и описание сайта на нужном языке. */
 export function rootMetadata(lang: Lang): Metadata {

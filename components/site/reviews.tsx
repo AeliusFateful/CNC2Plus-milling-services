@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Star } from "lucide-react";
 import { useI18n } from "@/components/i18n-provider";
-import { PortfolioModal } from "@/components/site/portfolio-modal";
+import { PortfolioModal } from "@/components/site/portfolio-modal-lazy";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Button } from "@/components/ui/button";
 import { withBasePath } from "@/lib/base-path";

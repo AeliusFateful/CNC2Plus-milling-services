@@ -1,7 +1,8 @@
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { withBasePath } from "@/lib/base-path";
-import { getDictionary, localePath, type Lang } from "@/lib/i18n";
+import { localePath, type Lang } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { siteConfig } from "@/lib/site-config";
 
 const LANGS: readonly Lang[] = ["ru", "kk"];
@@ -16,7 +17,7 @@ export function NotFoundPage() {
 
       <a href={withBasePath("/")} className="relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={withBasePath("/images/logo main.svg")} alt={siteConfig.name} className="w-56 md:w-64" />
+        <img src={withBasePath("/images/logo main.svg")} alt={siteConfig.name} width={434} height={86} className="h-auto w-56 md:w-64" />
       </a>
 
       <p

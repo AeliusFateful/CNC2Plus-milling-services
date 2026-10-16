@@ -1,10 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useI18n } from "@/components/i18n-provider";
 import { withBasePath } from "@/lib/base-path";
-import { ContactDetails, LeadForm } from "@/components/site/lead-form";
+import { ContactDetails } from "@/components/site/contact-details";
 import { sectionY } from "@/lib/section-spacing";
+
+// Форма (выпадающий список, уведомления) подгружается отдельным чанком: она в конце страницы и не нужна для первой отрисовки.
+const LeadForm = dynamic(() => import("@/components/site/lead-form").then((m) => m.LeadForm), {
+  ssr: false,
+  loading: () => <div className="min-h-120" aria-hidden />,
+});
 
 // Язык подписей на карте — в параметре «!1sru»; для казахской версии он заменяется на «!1skk».
 const MAP_SRC =

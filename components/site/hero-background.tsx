@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { preload } from "react-dom";
 import { useI18n } from "@/components/i18n-provider";
 import { withBasePath } from "@/lib/base-path";
 import type { PortfolioWork } from "@/lib/portfolio-meta";
@@ -32,6 +32,10 @@ function useVideoEnabled() {
 
   return enabled;
 }
+
+// Фото-фон — LCP-кандидат: на телефоне грузится уменьшенная копия, а в <head> добавляется preload с тем же srcset.
+const HERO_PHOTO = withBasePath("/images/hero-cnc.webp");
+const HERO_PHOTO_SRCSET = `${withBasePath("/images/hero-cnc-768.webp")} 768w, ${HERO_PHOTO} 1024w`;
 
 type Slot = 0 | 1;
 
@@ -148,6 +152,7 @@ function HeroVideoPlayer({
  */
 export function HeroBackground({ videos }: { videos: HeroVideo[] }) {
   const { workTitle } = useI18n();
+  preload(HERO_PHOTO, { as: "image", imageSrcSet: HERO_PHOTO_SRCSET, imageSizes: "100vw", fetchPriority: "high" });
   const enabled = useVideoEnabled() && videos.length > 0;
   const rootRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
@@ -165,12 +170,16 @@ export function HeroBackground({ videos }: { videos: HeroVideo[] }) {
   return (
     <>
       <div ref={rootRef} className="absolute inset-0 opacity-60">
-        <Image
-          src={withBasePath("/images/hero-cnc.webp")}
+        <img
+          src={HERO_PHOTO}
+          srcSet={HERO_PHOTO_SRCSET}
+          sizes="100vw"
           alt=""
-          fill
-          priority
-          className="object-cover"
+          width={1024}
+          height={1024}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 size-full object-cover"
         />
         {enabled && <HeroVideoPlayer videos={videos} visible={visible} onTitle={setTitle} />}
         <div className="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/20" />

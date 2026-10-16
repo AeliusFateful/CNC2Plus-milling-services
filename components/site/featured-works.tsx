@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PortfolioCard } from "@/components/site/portfolio-card";
-import { PortfolioModal } from "@/components/site/portfolio-modal";
+import { PortfolioModal } from "@/components/site/portfolio-modal-lazy";
 import { bentoGridClass, getBentoSpan, type PortfolioWork } from "@/lib/portfolio-meta";
 import { cn } from "@/lib/utils";
 import { sectionBodyMt } from "@/lib/section-spacing";

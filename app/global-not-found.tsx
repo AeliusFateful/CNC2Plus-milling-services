@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { RootDocument } from "@/components/root-document";
 import { NotFoundPage } from "@/components/pages/not-found-page";
-import { getDictionary } from "@/lib/i18n";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 export const metadata: Metadata = {
   title: `${getDictionary("ru").notFound.title} / ${getDictionary("kk").notFound.title} - CNC++`,

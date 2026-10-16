@@ -1,14 +1,7 @@
-import { kk } from "@/lib/i18n/kk";
-import { ru, type Dictionary } from "@/lib/i18n/ru";
+import type { Dictionary } from "@/lib/i18n/ru";
 
 export type Lang = "ru" | "kk";
 export type { Dictionary };
-
-const dictionaries: Record<Lang, Dictionary> = { ru, kk };
-
-export function getDictionary(lang: Lang): Dictionary {
-  return dictionaries[lang];
-}
 
 /** Префикс казахской версии сайта: русская лежит в корне, казахская — под /kk. */
 const KK_PREFIX = "/kk";
