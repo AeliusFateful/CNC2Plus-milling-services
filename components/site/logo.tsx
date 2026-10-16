@@ -13,7 +13,9 @@ export function Logo() {
       <img
         src={withBasePath("/images/logo main.svg")}
         alt={siteConfig.name}
-        className="w-50"
+        width={434}
+        height={86}
+        className="h-auto w-50"
       />
     </a>
   );

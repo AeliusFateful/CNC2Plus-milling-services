@@ -22,7 +22,9 @@ export function SiteFooter() {
               <img
                 src={withBasePath("/images/logo.svg")}
                 alt={siteConfig.name}
-                className="w-44"
+                width={434}
+                height={168}
+                className="h-auto w-44"
               />
             </a>
             <p className="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
