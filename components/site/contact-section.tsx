@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useI18n } from "@/components/i18n-provider";
 import { withBasePath } from "@/lib/base-path";
 import { ContactDetails, LeadForm } from "@/components/site/lead-form";
+import { sectionY } from "@/lib/section-spacing";
 
 // Язык подписей на карте — в параметре «!1sru»; для казахской версии он заменяется на «!1skk».
 const MAP_SRC =
@@ -15,7 +16,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-border/60 py-16 sm:py-24"
+      className={`relative overflow-hidden border-t border-border/60 ${sectionY}`}
     >
       <div className="absolute inset-0">
         <Image

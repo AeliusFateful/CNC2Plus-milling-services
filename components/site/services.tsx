@@ -6,12 +6,13 @@ import { withBasePath } from "@/lib/base-path";
 import { useI18n } from "@/components/i18n-provider";
 import { serviceVisuals } from "@/lib/sections-data";
 import { SectionHeading } from "@/components/site/section-heading";
+import { sectionY } from "@/lib/section-spacing";
 
 export function Services() {
   const { t } = useI18n();
 
   return (
-    <section id="services" className="border-t border-border/60 py-16 sm:py-24">
+    <section id="services" className={`border-t border-border/60 ${sectionY}`}>
       <div className="mx-auto max-w-360 px-4 md:px-6">
         <SectionHeading
           eyebrow={t.services.eyebrow}

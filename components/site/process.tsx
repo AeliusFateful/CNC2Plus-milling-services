@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { loadGsap, scrollToHash, whenNear, type GsapModules } from "@/lib/gsap-lazy";
 import { withBasePath } from "@/lib/base-path";
 import { useI18n } from "@/components/i18n-provider";
 import { processVisuals as STEPS } from "@/lib/sections-data";
@@ -17,6 +16,82 @@ const PIN_OFFSET_REM = 2.5;
 const START_BELOW_SCREEN = 0.3;
 const TOTAL =String(STEPS.length).padStart(2, "0");
 
+/** Включает «стопочную» раскладку с закреплением секции; возвращает функцию отката. */
+function setupStack({ gsap, ScrollTrigger }: GsapModules, stage: HTMLElement, cards: HTMLDivElement[]) {
+  const mm = gsap.matchMedia();
+
+  mm.add(STACK_QUERY, () => {
+    // Включает «стопочную» раскладку (CSS завязан на data-stack).
+    stage.dataset.stack = "true";
+
+    const stack = cards[0].parentElement as HTMLElement;
+    const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+    // Размеры меряем один раз на refresh, а не на каждое обращение — иначе при
+    // ресайзе браузер многократно пересчитывает раскладку.
+    let metrics: { peek: number; stackOffset: number } | null = null;
+    const getMetrics = () => {
+      if (!metrics) {
+        const probe = document.createElement("div");
+        probe.style.height = "var(--peek)";
+        stage.appendChild(probe);
+        const peek = probe.offsetHeight;
+        probe.remove();
+        // Смещение стопки от верха секции: нужно, чтобы карточки стартовали у нижнего края экрана.
+        const stackOffset = stack.getBoundingClientRect().top - stage.getBoundingClientRect().top;
+        metrics = { peek, stackOffset };
+      }
+      return metrics;
+    };
+
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        trigger: stage,
+        // Закрепляем чуть ниже верха экрана (под шапкой), а не вплотную к нему.
+        start: () => `top ${PIN_OFFSET_REM * remPx()}px`,
+        end: () => `+=${window.innerHeight * 0.6 * tl.duration()}`,
+        pin: true,
+        scrub: 0.3,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onRefreshInit: () => {
+          metrics = null;
+        },
+      },
+    });
+
+    // Карточки по очереди выезжают с нижнего края экрана и ложатся друг на друга.
+    cards.slice(1).forEach((card, k) => {
+      tl.fromTo(
+        card,
+        {
+          // Выезжают с нижнего края экрана, а не из-под обрезанной границы стопки.
+          y: () =>
+            window.innerHeight * (1 + START_BELOW_SCREEN) -
+            (PIN_OFFSET_REM * remPx() + getMetrics().stackOffset),
+        },
+        { y: () => (k + 1) * getMetrics().peek, duration: 1, force3D: true },
+        k,
+      );
+    });
+
+    return () => {
+      delete stage.dataset.stack;
+    };
+  });
+
+  // Пин добавляет высоту выше якоря (#contact и т.п.), поэтому позицию, выставленную
+  // браузером до инициализации, нужно пересчитать после refresh.
+  scrollToHash();
+  document.fonts?.ready.then(() => {
+    ScrollTrigger.refresh();
+    scrollToHash();
+  });
+
+  return () => mm.revert();
+}
+
 export function Process() {
   const { t } = useI18n();
   const sectionRef = useRef<HTMLElement>(null);
@@ -27,90 +102,25 @@ export function Process() {
     const cards = cardRefs.current.filter((card): card is HTMLDivElement => card !== null);
     if (!stage || cards.length < 2) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-    const mm = gsap.matchMedia();
-
-    mm.add(STACK_QUERY, () => {
-      // Включает «стопочную» раскладку (CSS завязан на data-stack).
-      stage.dataset.stack = "true";
-
-      const stack = cards[0].parentElement as HTMLElement;
-      const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-      // Размеры меряем один раз на refresh, а не на каждое обращение — иначе при
-      // ресайзе браузер многократно пересчитывает раскладку.
-      let metrics: { peek: number; stackOffset: number } | null = null;
-      const getMetrics = () => {
-        if (!metrics) {
-          const probe = document.createElement("div");
-          probe.style.height = "var(--peek)";
-          stage.appendChild(probe);
-          const peek = probe.offsetHeight;
-          probe.remove();
-          // Смещение стопки от верха секции: нужно, чтобы карточки стартовали у нижнего края экрана.
-          const stackOffset = stack.getBoundingClientRect().top - stage.getBoundingClientRect().top;
-          metrics = { peek, stackOffset };
-        }
-        return metrics;
-      };
-
-      const tl = gsap.timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: stage,
-          // Закрепляем чуть ниже верха экрана (под шапкой), а не вплотную к нему.
-          start: () => `top ${PIN_OFFSET_REM * remPx()}px`,
-          end: () => `+=${window.innerHeight * 0.6 * tl.duration()}`,
-          pin: true,
-          scrub: 0.3,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onRefreshInit: () => {
-            metrics = null;
-          },
-        },
-      });
-
-      // Карточки по очереди выезжают с нижнего края экрана и ложатся друг на друга.
-      cards.slice(1).forEach((card, k) => {
-        tl.fromTo(
-          card,
-          {
-            // Выезжают с нижнего края экрана, а не из-под обрезанной границы стопки.
-            y: () =>
-              window.innerHeight * (1 + START_BELOW_SCREEN) -
-              (PIN_OFFSET_REM * remPx() + getMetrics().stackOffset),
-          },
-          { y: () => (k + 1) * getMetrics().peek, duration: 1, force3D: true },
-          k,
-        );
-      });
-
-      return () => {
-        delete stage.dataset.stack;
-      };
+    let cancelled = false;
+    let revert: (() => void) | undefined;
+    const stopWaiting = whenNear(stage, async () => {
+      const modules = await loadGsap();
+      if (!cancelled) revert = setupStack(modules, stage, cards);
     });
 
-    // Пин добавляет высоту выше якоря (#contact и т.п.), поэтому позицию, выставленную
-    // браузером до инициализации, нужно пересчитать после refresh.
-    const scrollToHash = () => {
-      const id = decodeURIComponent(window.location.hash.slice(1));
-      if (id) document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
+    return () => {
+      cancelled = true;
+      stopWaiting();
+      revert?.();
     };
-    scrollToHash();
-    document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
-      scrollToHash();
-    });
-
-    return () => mm.revert();
   }, []);
 
   return (
     <section
       id="process"
       ref={sectionRef}
-      className="group/stage border-t border-border/60 bg-card/40 pt-16 pb-12 sm:pt-24 sm:pb-16 [--peek:4rem] data-[stack=true]:min-h-dvh data-[stack=true]:overflow-hidden data-[stack=true]:pt-14 data-[stack=true]:pb-6"
+      className="group/stage border-t border-border/60 bg-card/40 pt-12 pb-10 sm:pt-20 sm:pb-14 [--peek:4rem] data-[stack=true]:min-h-dvh data-[stack=true]:overflow-hidden data-[stack=true]:pt-14 data-[stack=true]:pb-6"
     >
       <div className="mx-auto max-w-360 px-4 md:px-6">
         <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} />
@@ -118,7 +128,7 @@ export function Process() {
 
       <div
         style={{ "--n": STEPS.length } as React.CSSProperties}
-        className="mt-8 group-data-[stack=true]/stage:mt-6"
+        className="mt-8 group-data-[stack=true]/stage:mt-6 md:mt-12"
       >
         <div className="mx-auto flex max-w-360 flex-col gap-6 px-4 group-data-[stack=true]/stage:gap-0 md:px-6">
           <div className="flex flex-col gap-6 group-data-[stack=true]/stage:relative group-data-[stack=true]/stage:block group-data-[stack=true]/stage:h-[calc(var(--card-h)+(var(--n)-1)*var(--peek))] group-data-[stack=true]/stage:[--card-h:max(15rem,min(50dvh,calc(100dvh-15rem-(var(--n)-1)*var(--peek))))]">

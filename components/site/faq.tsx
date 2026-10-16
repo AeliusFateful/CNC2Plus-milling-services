@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/components/i18n-provider";
 import { SectionHeading } from "@/components/site/section-heading";
+import { sectionBodyMt, sectionY } from "@/lib/section-spacing";
 
 export function Faq() {
   const { t } = useI18n();
@@ -12,7 +13,7 @@ export function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="border-t border-border/60 bg-card/40 py-16 sm:py-24">
+    <section id="faq" className={cn("border-t border-border/60", sectionY)}>
       <div className="mx-auto max-w-5xl px-4 md:px-6">
         <SectionHeading
           eyebrow={t.faq.eyebrow}
@@ -20,7 +21,7 @@ export function Faq() {
           centered
         />
 
-        <div className="mx-auto mt-14 divide-y divide-border/60 border-t border-border/60">
+        <div className={cn("mx-auto divide-y divide-border/60 border-t border-border/60", sectionBodyMt)}>
           {FAQ_ITEMS.map((item, index) => {
             const isOpen = openIndex === index;
             return (
