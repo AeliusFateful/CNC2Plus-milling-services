@@ -42,9 +42,9 @@ export function PortfolioCard({ work, index, className, onOpen }: PortfolioCardP
           aria-hidden="true"
         />
       )}
-      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-background via-background/65 to-transparent" />
-      <h3 className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-lg font-semibold tracking-[0.02em] text-foreground md:p-6">
-        {title}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 min-h-28 bg-linear-to-t from-background via-background/65 to-transparent" />
+      <h3 className="pointer-events-none absolute inset-x-0 bottom-0 p-4 text-lg leading-tight font-semibold tracking-[0.02em] text-foreground md:p-5">
+        <span className="line-clamp-3">{title}</span>
       </h3>
       {work.video && (
         <span
