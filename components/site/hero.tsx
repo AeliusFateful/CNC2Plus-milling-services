@@ -1,14 +1,13 @@
 "use client";
 
 import { Fragment } from "react";
-import Image from "next/image";
 import { ArrowRight, Gauge } from "lucide-react";
 import { useI18n } from "@/components/i18n-provider";
 import { Button } from "@/components/ui/button";
+import { HeroBackground, type HeroVideo } from "@/components/site/hero-background";
 import { RotatingWord } from "@/components/site/rotating-word";
-import { withBasePath } from "@/lib/base-path";
 
-export function Hero() {
+export function Hero({ videos }: { videos: HeroVideo[] }) {
   const { t } = useI18n();
   const { title } = t.hero;
 
@@ -17,19 +16,9 @@ export function Hero() {
       id="top"
       className="relative flex min-h-dvh flex-col overflow-hidden pt-19"
     >
-      <div className="absolute inset-0 opacity-60">
-        <Image
-          src={withBasePath("/images/hero-cnc.webp")}
-          alt=""
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-background via-background/70 to-background/20" />
-        <div className="absolute inset-0 bg-linear-to-r from-background/60 via-transparent to-transparent" />
-      </div>
+      <HeroBackground videos={videos} />
 
-      <div className="relative mx-auto flex w-full max-w-360 flex-1 flex-col justify-center px-6 max-md:max-w-xl">
+      <div className="relative mx-auto flex w-full max-w-360 flex-1 flex-col justify-center px-6 py-10 max-md:max-w-xl md:py-14">
         <div className="flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-primary">
           <Gauge className="size-4" />
           {t.hero.eyebrow}
@@ -55,7 +44,7 @@ export function Hero() {
           {t.hero.description}
         </p>
 
-        <div className="mt-10 flex flex-col gap-8 sm:flex-row sm:items-center">
+        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8 md:mt-10">
           <Button
             size="lg"
             render={<a href="#contact" />}
@@ -73,10 +62,10 @@ export function Hero() {
           </a>
         </div>
 
-        <dl className="mt-14 grid max-w-xl grid-cols-3 gap-6 border-t border-border/60 pt-8">
+        <dl className="mt-10 flex max-w-2xl flex-wrap gap-x-6 gap-y-4 border-t border-border/60 pt-6 max-md:justify-center max-md:text-center md:mt-14 md:gap-x-10 md:gap-y-6 md:pt-8">
           {t.hero.stats.map((stat) => (
             <div key={stat.label}>
-              <dt className="font-mono text-2xl font-bold text-foreground md:text-3xl">
+              <dt className="whitespace-nowrap font-mono [word-spacing:-0.3em] text-2xl font-bold text-foreground md:text-3xl">
                 {stat.value}
               </dt>
               <dd className="mt-1 text-sm text-muted-foreground">

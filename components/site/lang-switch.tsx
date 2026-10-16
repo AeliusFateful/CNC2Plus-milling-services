@@ -42,7 +42,7 @@ export function LangSwitch({ className }: { className?: string }) {
               }
             }}
             className={cn(
-              "rounded-[0.3rem] px-2 py-1 transition-colors",
+              "rounded-[0.3rem] px-2 py-1 tracking-[0.08em] transition-colors",
               active
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground",
