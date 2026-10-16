@@ -30,27 +30,27 @@ export type ServiceVisual = {
 export const serviceVisuals: readonly ServiceVisual[] = [
   {
     icon: Sofa,
-    photos: ["/images/portfolio/6.1.jpg", "/images/portfolio/9.1.jpg", "/images/portfolio/10.1.jpg"],
+    photos: ["/images/portfolio/21.1.webp", "/images/portfolio/20.2.webp", "/images/portfolio/19.1.webp"],
   },
   {
     icon: LayoutGrid,
-    photos: ["/images/portfolio/4.1.jpg", "/images/portfolio/4.2.jpg", "/images/portfolio/6.2.jpg"],
+    photos: ["/images/portfolio/4.1.webp", "/images/portfolio/16.1.webp", "/images/portfolio/23.3.webp"],
   },
   {
     icon: Signpost,
-    photos: ["/images/portfolio/1.2.jpg", "/images/portfolio/5.2.jpg", "/images/portfolio/11.1.jpg"],
+    photos: ["/images/portfolio/1.2.webp", "/images/portfolio/5.2.webp", "/images/portfolio/15.2.webp"],
   },
   {
     icon: SquareDashedBottom,
-    photos: ["/images/portfolio/10.2.jpg", "/images/portfolio/7.1.jpg", "/images/portfolio/7.2.jpg"],
+    photos: ["/images/portfolio/26.1.webp", "/images/portfolio/19.2.webp", "/images/portfolio/7.2.webp"],
   },
   {
     icon: Boxes,
-    photos: ["/images/portfolio/12.2.jpg", "/images/portfolio/8.1.jpg", "/images/portfolio/9.2.jpg"],
+    photos: ["/images/portfolio/12.2.webp", "/images/portfolio/18.1.webp", "/images/portfolio/9.2.webp"],
   },
   {
     icon: Sparkles,
-    photos: ["/images/portfolio/2.1.jpg", "/images/portfolio/3.3.jpg", "/images/portfolio/1.3.jpg"],
+    photos: ["/images/portfolio/2.1.webp", "/images/portfolio/8.2.webp", "/images/portfolio/1.2.webp"],
   },
 ];
 
@@ -64,7 +64,7 @@ export const advantageVisuals: readonly AdvantageVisual[] = [
   { icon: ShieldCheck, background: "/images/advantages/handshake.webp" },
   { icon: Award, background: "/images/Owner/Boss_CNC.webp" },
   { icon: Clock, background: "/images/advantages/supervisor.webp" },
-  { icon: Recycle, background: "/images/layout_details.jpg" },
+  { icon: Recycle, background: "/images/layout_details.webp" },
 ];
 
 export type ProcessVisual = {
@@ -76,6 +76,6 @@ export type ProcessVisual = {
 export const processVisuals: readonly ProcessVisual[] = [
   { icon: MessageSquareText, number: "01", image: "/images/Owner/Professional_Call.webp" },
   { icon: Calculator, number: "02", image: "/images/layout.webp" },
-  { icon: Cog, number: "03", image: "/images/Cutting.jpg" },
+  { icon: Cog, number: "03", image: "/images/cutting.webp" },
   { icon: Truck, number: "04", image: "/images/transportation.webp" },
 ];

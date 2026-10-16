@@ -18,7 +18,7 @@ const PHOTOS = [
     className: "origin-[38%_30%] scale-130 object-[35%_50%]",
   },
   {
-    src: "/images/machines.jpg",
+    src: "/images/machines.webp",
     alt: "machines",
     box: "aspect-18/13 lg:aspect-21/10 lg:flex-[2_1_auto]",
     className: "object-center",

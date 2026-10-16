@@ -19,7 +19,7 @@ export function ContactSection() {
     >
       <div className="absolute inset-0">
         <Image
-          src={withBasePath("/images/portfolio/7.2.jpg")}
+          src={withBasePath("/images/portfolio/7.2.webp")}
           alt=""
           fill
           className="object-cover"
