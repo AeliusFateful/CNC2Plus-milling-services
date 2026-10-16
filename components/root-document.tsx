@@ -1,7 +1,7 @@
 import { I18nProvider } from "@/components/i18n-provider";
 import type { Lang } from "@/lib/i18n";
 import { getDictionary } from "@/lib/i18n/dictionaries";
-import { fontVariables } from "@/lib/fonts";
+import "@/app/fonts/fonts.css";
 import "@/app/globals.css";
 
 /** Корневой документ: у русской и казахской версий свой корневой layout, поэтому <html lang> разный. */
@@ -9,7 +9,7 @@ export function RootDocument({ lang, children }: { lang: Lang; children: React.R
   return (
     <html
       lang={lang}
-      className={`dark bg-background ${fontVariables}`}
+      className="dark bg-background"
       suppressHydrationWarning
     >
       <body className="antialiased font-sans" suppressHydrationWarning>

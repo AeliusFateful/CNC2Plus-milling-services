@@ -158,9 +158,9 @@ export function Process() {
                       <h3 className="min-w-0 flex-1 text-xl leading-tight font-semibold tracking-[0.02em] text-foreground lg:text-3xl">
                         {title}
                       </h3>
-                      <div className="shrink-0 font-mono leading-none font-bold text-primary/70 group-data-[stack=true]/stage:hidden">
+                      <div className="shrink-0 font-mono leading-none font-bold text-primary/85 group-data-[stack=true]/stage:hidden">
                         <span className="text-3xl md:text-4xl">{number}</span>
-                        <span className="text-xl">/{TOTAL}</span>
+                        <span className="text-lg md:text-xl">/{TOTAL}</span>
                       </div>
                     </div>
                     <p className="mt-3 text-lg leading-relaxed text-muted-foreground md:mt-2 md:text-base lg:mt-3 lg:text-xl">
