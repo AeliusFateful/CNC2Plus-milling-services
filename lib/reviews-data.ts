@@ -18,5 +18,4 @@ export const reviewVisuals: readonly ReviewVisual[] = [
   {},
   {},
   {},
-  {},
 ];
