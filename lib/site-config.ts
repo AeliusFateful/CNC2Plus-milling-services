@@ -1,5 +1,7 @@
 export const siteConfig = {
   name: "CNC++",
+  /** Все отзывы о компании на 2ГИС. */
+  reviewsUrl: "https://2gis.kz/astana/firm/70000001075941424/tab/reviews",
   legal: {
     binIin: "850222050437",
   },

@@ -4,6 +4,7 @@ export type NavKey =
   | "services"
   | "advantages"
   | "works"
+  | "reviews"
   | "faq"
   | "contact"
   | "portfolio"
@@ -16,9 +17,12 @@ export const mainPageAnchors: readonly NavItem[] = [
   { key: "services", href: "/#services" },
   { key: "advantages", href: "/#advantages" },
   { key: "works", href: "/#works" },
+  { key: "reviews", href: "/#reviews" },
   { key: "faq", href: "/#faq" },
-  { key: "contact", href: "/#contact" },
 ];
+
+/** «Оставить заявку» — главное действие: отдельный пункт верхнего меню, не в списке разделов. */
+export const contactAnchor: NavItem = { key: "contact", href: "/#contact" };
 
 /** Отдельные страницы в верхнем меню (рядом с «Главной»). */
 export const pageNav: readonly NavItem[] = [
@@ -35,6 +39,7 @@ export const footerNavColumns: readonly (readonly NavItem[])[] = [
   ],
   [
     { key: "portfolio", href: "/portfolio" },
+    { key: "reviews", href: "/#reviews" },
     { key: "faq", href: "/#faq" },
     { key: "contact", href: "/#contact" },
     { key: "about", href: "/about" },

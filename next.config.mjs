@@ -8,6 +8,8 @@ const nextConfig = {
   basePath,
   images: { unoptimized: true },
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
+  // Свой 404 при нескольких корневых layout (русская и казахская версии).
+  experimental: { globalNotFound: true },
 };
 
 export default nextConfig;
