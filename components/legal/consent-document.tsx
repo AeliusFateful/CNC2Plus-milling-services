@@ -39,14 +39,14 @@ export function ConsentDocument() {
           {t.legal.consentText}{" "}
           <Link
             href={path("/privacy")}
-            className="break-words text-foreground underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary"
+            className="break-words text-foreground underline decoration-primary/60 underline-offset-[6px] transition-colors hover:text-primary"
           >
             {POLICY_URL}
           </Link>
           . {t.legal.consentRevokeBefore}
           <a
             href={`mailto:${EMAIL}`}
-            className="break-words text-foreground underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary"
+            className="break-words text-foreground underline decoration-primary/60 underline-offset-[6px] transition-colors hover:text-primary"
           >
             {EMAIL}
           </a>
@@ -65,7 +65,7 @@ export function ConsentDocument() {
           </p>
           <a
             href={`mailto:${EMAIL}?subject=${encodeURIComponent(lang === "kk" ? "Дербес деректер" : "Персональные данные")}`}
-            className="mt-4 inline-block text-foreground underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary"
+            className="mt-4 inline-block text-foreground underline decoration-primary/60 underline-offset-[6px] transition-colors hover:text-primary"
           >
             {EMAIL}
           </a>
@@ -92,7 +92,7 @@ export function ConsentDocument() {
         </Link>
         <Link
           href={path("/")}
-          className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+          className="text-sm text-muted-foreground underline underline-offset-[6px] transition-colors hover:text-foreground"
         >
           {t.legal.backHome}
         </Link>

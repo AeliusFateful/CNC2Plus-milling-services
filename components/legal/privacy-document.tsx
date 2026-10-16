@@ -190,7 +190,7 @@ export function PrivacyDocument() {
           )}
           <Link
             href={path("/consent")}
-            className="inline-flex items-center gap-2 text-foreground underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary"
+            className="inline-flex items-center gap-2 text-foreground underline decoration-primary/60 underline-offset-[6px] transition-colors hover:text-primary"
           >
             <FileCheck2 className="size-4 text-primary" />
             {t.legal.consentLinkLabel}
@@ -243,7 +243,7 @@ export function PrivacyDocument() {
                     {href ? (
                       <a
                         href={href}
-                        className="underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary"
+                        className="underline decoration-primary/60 underline-offset-[6px] transition-colors hover:text-primary"
                       >
                         {value}
                       </a>

@@ -4,7 +4,7 @@ import { Fragment } from "react";
 const TOKEN_RE = /(https?:\/\/[^\s,;)]*[^\s.,;)]|[\w.+-]+@[\w-]+\.[\w.]*\w)/g;
 
 const linkClassName =
-  "break-words text-foreground underline decoration-primary/60 underline-offset-4 transition-colors hover:text-primary";
+  "break-words text-foreground underline decoration-primary/60 underline-offset-[6px] transition-colors hover:text-primary";
 
 export function RichText({ text }: { text: string }) {
   return text.split(TOKEN_RE).map((part, index) => {
